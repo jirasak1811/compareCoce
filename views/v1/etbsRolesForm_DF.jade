@@ -1,0 +1,139 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1(data-i18n='Roles Management') Roles Management
+  // Main content
+  section.content
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            if action == '/api/v1/etbs-roles/insert'
+              h3.box-title(data-i18n='new') New
+            else if action == '/api/v1/etbs-roles/updates'
+              h3.box-title(data-i18n='edit') Edit
+            else
+              h3.box-title(data-i18n='remove') Remove
+          // /.box-header
+          if error
+            .alert.alert-danger.alert-dismissible
+              button.close(type='button' data-dismiss='alert' aria-hidden='true') &times;
+              h4
+                i.icon.fa.fa-ban
+                label(data-i18n='Alert') Alert
+              label(data-i18n='Some value are not allow, please try again.') Some value are not allow, please try again.
+          // form start
+          form(method='POST' action=action role='form')
+            .box-body
+              if rolename != undefined
+                input#originRolename(type='hidden' name='originRolename' value=rolename , data-i18n='[placeholder]Role Name')
+              if profileid != undefined
+                input#originProfileid(type='hidden' name='originProfileid' value=profileid , data-i18n='[placeholder]Profile ID')
+              .form-group
+                label(for='rolename' , data-i18n='Role Name') Role Name
+                input#rolename.form-control(type='text' placeholder='Role Name' name='rolename' value=rolename required , data-i18n='[placeholder]Role Name')
+              .form-group
+                label(for='profileid' , data-i18n='Profile ID') Profile ID
+                input#profileid.form-control(type='text' placeholder='Profile ID' name='profileid' value=profileid required , data-i18n='[placeholder]Profile ID')
+              .form-group
+                label(for='is_active' , data-i18n='Active') Active
+                select#is_active.form-control(name='is_active')
+                    option(value='1') Active
+                    option(value='0') InActive
+                input#token.form-control(type='hidden' placeholder='token' name='token' value=token )
+              if action != '/api/v1/etbs-roles/insert'
+                .form-group
+                  label(for='viewgroup',data-i18n='View Groups') View Group
+                  p
+                    a.btn.btn-success.btn-xs.vieweditgroup(data-user='')
+                      i.fa.fa-users
+                      label Set View Group
+              if permissions
+                .form-group
+                  .box-body
+                    table#datatable-roles-form.table.table-bordered.table-hover
+                      thead
+                        tr
+                          th
+                          th(data-i18n='permission') Permission
+                          th(data-i18n='Permission Type') Permission Type
+                      tbody
+                        each permission in permissions
+                          tr
+                            td
+                              input(type='checkbox' checked=(permission.profileid == profileid) name='permissions' value='{"permission":"'+permission.permission+'","profileid":"'+permission.profileid+'","perm_type":"'+permission.perm_type+'","rolename":"'+permission.rolename+'"}')
+                            td= permission.permission
+                            td= permission.perm_type
+                      tfoot
+                        tr
+                          th
+                          th(data-i18n='permission') Permission
+                          th(data-i18n='Permission Type') Permission Type
+              if originPermissions
+                each originPermission in originPermissions
+                  input(type='hidden' value='{"permission":"'+originPermission.permission+'","profileid":"'+originPermission.profileid+'","perm_type":"'+originPermission.perm_type+'","rolename":"'+originPermission.rolename+'"}' name='originPermissions')
+              // /.box-body
+              .box-footer
+              if action == '/api/v1/etbs-roles/insert'
+                button.btn.btn-primary(type='submit' , data-i18n='create') Create
+              else if action == '/api/v1/etbs-roles/updates'
+                button.btn.btn-primary(type='submit' , data-i18n='save') Save
+              else
+                button.btn.btn-danger(type='submit' , data-i18n='remove') Remove
+      .modal.editgroupview.fade(tabindex='-1', role='dialog')
+          .modal-dialog.modal-lg
+              .modal-content
+                  .modal-header
+                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                          span(aria-hidden='true') x
+                      h4.modal-title(data-i18n='user group') User Group
+                  .modal-body#editgroupview-body
+                      h5(data-i18n='this user can view group') This User Can View Group
+                      div.easy-tree
+                  .modal-footer#editgroupview-footer
+                      div.btn(data-dismiss='modal', data-i18n='cancel') Cancel
+                      div.btn.btn-success#confirm-editgroupview(data-i18n='confirm') Confirm
+      .modal.alertgroupview.fade(tabindex='-1', role='dialog')
+          .modal-dialog.modal-lg
+              .modal-content
+                  .modal-header
+                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                          span(aria-hidden='true') x
+                      h4.modal-title(data-i18n='user group') User Group
+                  .modal-body#alertgroupview-body
+                      //div.easy-tree
+                  .modal-footer#alertgroupview-footer
+                      //div.btn(data-dismiss='modal', data-i18n='cancel') Cancel
+                      //div.btn.btn-success#confirm-alertgroupview(data-i18n='confirm') Confirm
+block script
+  // jQuery 2.2.0
+  //script(src='/AdminLTE-2.3.3/plugins/jQuery/jQuery-2.2.0.min.js')
+  // Bootstrap 3.3.6
+  // script(src='/AdminLTE-2.3.3/bootstrap/js/bootstrap.min.js', type='text/javascript')
+  // DataTables
+  script(src='/AdminLTE-2.3.3/plugins/datatables/jquery.dataTables.min.js', type='text/javascript')
+  script(src='/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.min.js', type='text/javascript')
+  // SlimScroll
+  // script(src='/AdminLTE-2.3.3/plugins/slimScroll/jquery.slimscroll.min.js', type='text/javascript')
+  // FastClick
+  // script(src='/AdminLTE-2.3.3/plugins/fastclick/fastclick.js', type='text/javascript')
+  // AdminLTE App
+  // script(src='/AdminLTE-2.3.3/dist/js/app.min.js', type='text/javascript')
+  // AdminLTE for demo purpose
+  script(src='/AdminLTE-2.3.3/dist/js/demo.js', type='text/javascript')
+  // page script
+  script(src='/javascripts/tables/rolesFormDataTable.js' type='text/javascript')
+  script(src='/javascripts/modal_viewgroup.js', type='text/javascript')
+  script(src='/javascripts/app.func.js', type='text/javascript')
+  script.
+    if($('#rolename').val() == 'Normal' || $('#rolename').val() == 'Admin'){
+        $('#rolename').attr('disabled',true)
+        $('#profileid').attr('disabled',true)
+        $('#is_active').attr('disabled',true)
+        for(var i =  0 ; i < document.getElementsByName('permissions').length;i++){
+            $(document.getElementsByName('permissions')[i]).attr('disabled',true)
+        }
+    }

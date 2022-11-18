@@ -1,0 +1,17 @@
+[Unit]
+Description=eTBS Admin UI
+Requires=network.target
+
+[Service]
+Environment="NODE_ENV=production"
+WorkingDirectory=/opt/etbs/admin
+ExecStart=/usr/bin/node ./bin/www
+Restart=always
+User=root
+Group=root
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=etbs-admin
+
+[Install]
+WantedBy=multi-user.target

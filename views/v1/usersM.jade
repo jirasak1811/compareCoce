@@ -1,0 +1,150 @@
+extend ../layout2
+
+block header
+    //link(rel='stylesheet', href='/editable/bootstrap3-editable/css/bootstrap-editable.css')
+
+block content
+    section.content
+        .row
+            .col-md-12
+                .box.box-danger
+                    .box-header
+                        h3.box-title(data-i18n='User Management') User Management
+                        button.btn.btn-success.btn-xs.pull-right(type='button', data-toggle='modal', data-target='#newUserDialog', aria-labelledby='#dialogTitle')
+                            i.fa.fa-plus(data-i18n='New User')  New User
+                        .modal.fade#newUserDialog(tabindex='-1', role='dialog')
+                            .modal-dialog(role='document')
+                                .modal-content
+                                    .modal-header
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                            span(aria-hidden='true') &times;
+                                        h4.modal-title#dialogTitle(data-i18n='Add New User') Add New User
+                                    .modal-body
+                                        .container-fluid
+                                            form#newUserForm(role='form')
+                                                .form-group.has-feedback
+                                                    label.control-label(for='newUsername' , data-i18n='Username') Username
+                                                    input.form-control#newUser(type='text', name='newUsername', placeholder='Enter Username', required , data-i18n='[placeholder]Enter Username')
+                                                .form-group
+                                                    label(for='newPassword' , data-i18n='Password') Password
+                                                    input.form-control#newPassword(type='text', name='newPassword', placeholder='Enter Password', required , data-i18n='[placeholder]Enter Password')
+                                                    .form-group
+                                                    label(for='newRolename' , data-i18n='Role Name') Role Name
+                                                    select.select2.form-control#newRolename(name='newRolename')
+                                                    //- input.form-control#newPassword(type='text', name='newRolename', placeholder='Enter Rolename', value='admin' required , data-i18n='[placeholder]Enter Rolename')
+                                                .form-group
+                                                    label(for='newExtension' , data-i18n='extension') Extension
+                                                    input.form-control#newExtension(type='text', name='newExtension', placeholder='Enter Extension' , data-i18n='[placeholder]Enter Extension')
+                                                .form-group
+                                                    label(for='newName' , data-i18n='Name') Name
+                                                    input.form-control#newName(type='text', name='newName', placeholder='Enter Name', required , data-i18n='[placeholder]Enter Name')
+                                                .form-group(style="display:none;")
+                                                    label(for='newCompany' , data-i18n='Company') Company
+                                                    input.form-control#newCompany(type='text', name='newCompany', placeholder='Enter Company', data-i18n='[placeholder]Enter Company')
+                                                .form-group
+                                                    label(for='newMobile' , data-i18n='mobile') Mobile
+                                                    input.form-control#newMobile(type='text', name='newMobile', placeholder='Enter Mobile', data-i18n='[placeholder]Enter Mobile')
+                                                .form-group
+                                                    label(for='newFax' , data-i18n='Fax') Fax
+                                                    input.form-control#newFax(type='text', name='newFax', placeholder='Enter Fax', data-i18n='[placeholder]Enter Fax')
+                                                .form-group
+                                                    label(for='newEmail' , data-i18n='Email') Email
+                                                    input.form-control#newEmail(type='text', name='newEmail', placeholder='Enter Email', data-i18n='[placeholder]Enter Email')
+                                                .form-group
+                                                    label(for='newActive' , data-i18n='Active') Active
+                                                    //input.form-control#newActive(type='tel', name='newActive', pattern='[0-1]', placeholder='Enter Active', data-i18n='[placeholder]Enter Active')
+                                                    select.form-control#newActive
+                                                      option(value='1') Active
+                                                      option(value='0' , selected) InActive
+                                                
+                                    .modal-footer
+                                        button.btn.btn-default(type='button', data-dismiss='modal' , data-i18n='close') Close
+                                        button.btn.btn-success#save(type='submit' , data-i18n='save') Save
+                        .modal.view-detail.fade(tabindex='-1', role='dialog')
+                            .modal-dialog.modal-lg
+                                .modal-content
+                                    .modal-header
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                            span(aria-hidden='true') x
+                                        h4.modal-title(data-i18n='user') User
+                                    .modal-body#view-detail-body
+                                                
+                                    .modal-footer
+                        .modal.editgroupview.fade(tabindex='-1', role='dialog')
+                            .modal-dialog.modal-lg
+                                .modal-content
+                                    .modal-header
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                            span(aria-hidden='true') x
+                                        h4.modal-title(data-i18n='user group') User Group
+                                    .modal-body#editgroupview-body
+                                        h5(data-i18n='this user can view group') This User Can View Group
+                                        div.easy-tree
+                                    .modal-footer#editgroupview-footer
+                                        div.btn(data-dismiss='modal', data-i18n='cancel') Cancel
+                                        div.btn.btn-success#confirm-editgroupview(data-i18n='confirm') Confirm
+                        .modal.alertgroupview.fade(tabindex='-1', role='dialog')
+                            .modal-dialog.modal-lg
+                                .modal-content
+                                    .modal-header
+                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                            span(aria-hidden='true') x
+                                        h4.modal-title(data-i18n='user group') User Group
+                                    .modal-body#alertgroupview-body
+                                        //div.easy-tree
+                                    .modal-footer#alertgroupview-footer
+                                        //div.btn(data-dismiss='modal', data-i18n='cancel') Cancel
+                                        //div.btn.btn-success#confirm-alertgroupview(data-i18n='confirm') Confirm
+
+                    .box-body
+                        table.table.table-condensed.hover.stripe#UserManageTable
+                            thead
+                                th(data-i18n='Username') UserName
+                                th(data-i18n='Password') Password
+                                th(data-i18n='Role') Role
+                                th(data-i18n='extension') Extension
+                                th(data-i18n='Name') Name
+                                //th(data-i18n='Company') Company
+                                th(data-i18n='mobile') Mobile
+                                th(data-i18n='Fax') Fax
+                                th(data-i18n='Email') Email
+                                th(data-i18n='Active' ,style="text-align:center;") Active
+                                th(style="width:30px")
+                                th(style="width:30px")
+                            tbody#UserManageTableBody
+                                - for row in data
+                                    tr(class="showmoredetail" , data-ext=row.extension , data-username=row.username)
+                                        td
+                                            a(href='#', data-name='username', data-type='text', data-pk=row.username, data-title='Enter Username' , data-i18n='[data-title]Enter Username')= (row.username || '-')
+                                        td 
+                                            a(href='#', data-name='passowrd', data-type='text', data-pk=row.username, data-title='Enter Password' , data-i18n='[data-title]Enter Password')= "#########"
+                                        td
+                                            a.edit-selectRole(href='#', data-name='rolename', data-type='select', data-pk=row.username, data-title='Enter Role' , data-i18n='[data-title]Enter Rolename' , data-value=row.rolename )= (row.rolename || '-')
+                                        td
+                                            a.editable(href='#', data-name='extension', data-type='text', data-pk=row.username, data-title='Enter Extension', data-i18n='[data-title]Enter Extension')= (row.extension || '-')
+                                        td
+                                            a.editable(href='#', data-name='name', data-type='text', data-pk=row.username, data-title='Enter Name' , data-i18n='[data-title]Enter Name')= (row.name || '-')
+                                        //td
+                                            a.editable(href='#', data-name='company', data-type='text', data-pk=row.username, data-title='Enter Company' , data-i18n='[data-title]Enter Company')= (row.company || '-')
+                                        td
+                                            a.editable(href='#', data-name='mobile', data-type='text', data-pk=row.username, data-title='Enter Mobile' , data-i18n='[data-title]Enter Mobile')= (row.mobile || '-')
+                                        td
+                                            a.editable(href='#', data-name='fax', data-type='text', data-pk=row.username, data-title='Enter Fax' , data-i18n='[data-title]Enter Fax')=( row.fax || '-')
+                                        td
+                                            a.editable(href='#', data-name='email', data-type='text', data-pk=row.username, data-title='Enter Email' , data-i18n='[data-title]Enter Email')=( row.email || '-')
+                                        td(align="center")
+                                            //a.editable(href='#', data-name='is_active', data-type='tel', data-pk=row.username, data-title='Enter Active', pattern='[0-1]' , data-i18n='[data-title]Enter Active')= row.is_active
+                                            a.edittable-selectActive(href='#', data-type='select',data-name='is_active', data-pk=row.username, data-title='Enter Active', data-i18n='[data-title]Enter Active' , data-value=row.is_active) #{row.is_active=='1' ? 'Active' : 'InActive'}
+                                        td(align="center" , style="width:30px")
+                                            a.btn.btn-success.btn-xs.vieweditgroup(data-user=row.username)
+                                                i.fa.fa-users
+                                        td(align="center" , style="width:30px")
+                                            a.btn.btn-warning.btn-xs.deleteuserbtn(data-user=row.username)
+                                                i.fa.fa-trash
+
+block script
+    script(type='text/javascript', src='/editable/bootstrap3-editable/js/bootstrap-editable.min.js')
+    script(type='text/javascript', src='/AdminLTE-2.3.3/plugins/datatables/jquery.dataTables.min.js')
+    script(type='text/javascript', src='/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.min.js')
+    script(type='text/javascript', src='/javascripts/app.func.js')
+    script(type='text/javascript', src='/javascripts/users.js')

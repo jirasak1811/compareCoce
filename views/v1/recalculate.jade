@@ -1,0 +1,127 @@
+extend ../layout2
+
+block header    
+	//link(rel='stylesheet', href='/editable/bootstrap3-editable/css/bootstrap-editable.css')
+	//link(rel='stylesheet', href='/bootstrap-select/dist/css/bootstrap-select.min.css')
+
+//block content-header
+
+block content
+	// Content Header (Page header)
+	section.content-header
+		h1
+			label(data-i18n='recalculate') Recalculate
+			small(data-i18n='recalculate') Recalculate
+			//|  
+			//button.btn-ext-add.btn.btn-success(type='button', disabled='') 
+				i.fa.fa-plus
+				| Add Extension
+		ol.breadcrumb
+			li
+				a(href='/api/v1/recalculate?access_token=' + token)
+					i.fa.fa-group
+					label(data-i18n='recalculate')  Recalculate
+			li.active(data-i18n='-recalculate') Recalculate
+	// Main content
+	section.content
+		.row
+			.col-md-12
+				.box.box-primary
+					.box-header.with-border
+					.box-body.recalculate-view
+					.box-footer.no-padding
+					
+	.modal.ext-modal-add-ext.fade(tabindex='-1', role='dialog')
+		.modal-dialog
+			.modal-content
+				.modal-header
+					button.close(type='button', data-dismiss='modal', aria-label='Close')
+						span(aria-hidden='true') ×
+					h4.modal-title(data-i18n='Create Extension') Create Extension
+				.modal-body
+					form#newExtensionForm.form-horizontal
+						.form-group
+							label.col-sm-2.control-label(for='inputAddExt' , data-i18n='extension') Extension
+							.col-sm-10
+								input#inputAddExt.form-control(name='ext', type='number', placeholder='Extension' , data-i18n='[placeholder]extension')
+						.form-group
+							label.col-sm-2.control-label(for='inputAddExtName' , data-i18n='Name') Name
+							.col-sm-10
+								input#inputAddExtName.form-control(name='name', type='text', placeholder='Name' , data-i18n='[placeholder]Name')
+						// radio
+						.form-group
+							label.col-sm-2.control-label(for='selectAddExtType',data-i18n='Type') Type
+							.col-sm-10
+								.col-sm-4
+									input.form-control.flat-blue(type='radio', name='exttype', data-val='Normal', checked='')
+									label(data-i18n='Normal')  Normal
+								.col-sm-4
+									input.form-control.flat-blue(type='radio', name='exttype', data-val='VIP')
+									label(data-i18n='VIP')  VIP
+								.col-sm-4
+									input.form-control.flat-blue(type='radio', name='exttype', data-val='Guest', disabled='')
+									label(data-i18n='Guest')  Guest
+									input#selectAddExtType.form-control(name='exttypeval', type='hidden', value='Normal')
+
+						.form-group
+							label.col-sm-2.control-label(for='inputAddExtAuthrizeCode' , data-i18n='Auth Code') Auth. Code
+							.col-sm-10
+								input#inputAddExtAuthrizeCode.form-control(name='authcode', type='text', placeholder='Authorize Code' , data-i18n='[placeholder]Authorize Code')
+						.form-group
+							.col-sm-offset-2.col-sm-10
+								.checkbox
+										input#cbAddExtLicense.minimal(name='lic', type='checkbox', checked='')
+										label
+										label(data-i18n='islicense?') Is License?
+										input#inputAddExtLicense.form-control(name='licval', type='hidden', value='1')
+										//a(href='#') terms and conditions
+				.modal-footer
+					button.btn.btn-default(type='button', data-dismiss='modal' , data-i18n='cancel') Cancel
+					button.btn-ext-add-ok.btn.btn-primary(type='button' , data-i18n='add') Add
+			// /.modal-content
+		// /.modal-dialog
+	// /.modal
+	
+	.modal.LoadingView.fade(tabindex='-1', role='dialog', data-backdrop="static" , data-keyboard="false")
+		.modal-dialog.modal-lg
+			.modal-content
+				.modal-header#headerLoadingView
+				.modal-body#bodyLoadingView
+				.modal-footer#footerLoadingView
+			// /.modal-content
+		// /.modal-dialog
+	// /.modal
+
+block script
+	//script(type='text/javascript').
+	//var rowPerPage = 9;
+	//var rateList = [];
+
+
+	script(type='text/javascript', src='/javascripts/moment.min.js')
+	script(type='text/javascript', src='/javascripts/jquery.finger.min.js')
+	script(type='text/javascript', src='/javascripts/app.func.js')
+	script(type='text/javascript', src='/javascripts/recalculate.func.js')
+	script(type='text/javascript', src='/javascripts/optReportDate.js')
+	script(type='text/javascript').
+		$(document).ready(function() {
+			
+			/* declare variables */
+			var v_exttype = 'Normal';
+			var v_lic = true;
+			var v_same_name = false;
+			var v_same_authcode = false;
+			
+			/*$.Finger = {
+				pressDuration: 300,
+				doubleTapInterval: 300,
+				flickDuration: 150,
+				motionThreshold: 5
+			};*/
+			
+			getLicenseUsage("!{user}","!{ext_lic}","!{token}");
+			RecalculateLoad("!{user}","!{ext_lic}","!{token}");
+			
+		});
+		
+		$(document).ajaxStart(function() { Pace.restart(); });

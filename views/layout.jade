@@ -1,0 +1,152 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        meta(http-equiv='X-UA-Compatible' content='IE-edge')
+        meta(name='vewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+        title= title
+        link(rel='stylesheet' href='/bootstrap/css/bootstrap.min.css')
+        link(rel='stylesheet' href='/ionicons-2.0.1/css/ionicons.min.css')
+        link(rel='stylesheet' href='/AdminLTE-2.3.3/dist/css/skins/skin-blue.min.css')
+        link(rel='stylesheet' href='/AdminLTE-2.3.3/dist/css/AdminLTE.min.css')
+        link(rel='stylesheet' href='/font-awesome/css/font-awesome.min.css')
+
+        block header
+    body.hold-transition.skin-blue.sidebar-collapse.sidebar-mini
+        wrapper
+            header.main-header
+                a.logo(href='/')
+                    span.logo-mini eTBS
+                    span.logo-lg eTBS Cloud
+                nav.navbar.navbar-static-top(role='navigation')
+                    a.sidebar-toggle(href='#' data-toggle='offcanvas' role='button')
+                        span.sr-only Toggle Naviation
+                    .navbar-custom-menu
+                        ul.nav.navbar-nav
+                            li.dropdown.user.user-menu
+                                a.data-toggle(href='#' data-toggle='dropdown')
+                                    span.lb-user.hidden-xs !{user}
+                                ul.dropdown-menu
+                                    li.user-header
+                                        img.img-circle(src='/AdminLTE-2.3.3/dist/img/conv-160x160.png' alt='User Image')
+                                        p.lb-company-name
+                                            | CONVERGENCE TECHNOLOGY
+                                            small.lb-created-at License created at 2016-01-01
+                                    // Menu Body
+                                    li.user-body
+                                        .row
+                                            .col-xs-4.text-center
+                                                a.lb-ext-lic(href='#' title='License') 128
+                                            .col-xs-4.text-center
+                                                a.lb-used-lic(href='#' title='Used') 1
+                                            .col-xs-4.text-center
+                                                a.lb-remain-lic(href='#' title='Remaining') 1
+                                        // /.row
+                                        // Menu Footer
+                                        li.user-footer
+                                            .pull-left
+                                            //
+                                                a.btn.btn-default.btn-flat(href='javascript:;') Profile
+                                            .pull-right
+                                                a.btn-logout.btn.btn-default.btn-flat(href='/api/v1/signout?access_token=' + token) Log out
+            aside.main-sidebar
+                section.sidebar
+
+                    .user-panel
+                    //
+                        .pull-left.image
+                            img.img-circle(src='/AdminLTE-2.3.3/dist/img/user2-160x160.jpg' alt='User Image')
+                        .pull-left.info
+                            p Alexander Pierce
+                            a(href='#')
+                                i.fa.fa-circle.text-success
+                                |  Online
+
+                    form.sidebar-form(method='get' action='#')
+                        .input-group
+                            input.form-control(type='text' name='q' placeholder='Search...')
+                            span.input-group-btn
+                                button.btn.btn-flat(type='submit' name='search' id='search-btn')
+                                    i.fa.fa-search
+                    ul.sidebar-menu
+                        li.header MENU
+                        li
+                            a(href='/api/v1/dashboard?access_token=' + token)
+                                i.fa.fa-dashboard
+                                span Dashboard
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-files-o
+                                span Reports
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li
+                                    a(href='/api/v1/reports/extension/summary?access_token=' + token) User Reports
+                                li
+                                    a(href='/api/v1/reports/admin/destination/summary?access_token=' + token) Admin Reports
+                                li
+                                    a(href='/api/v1/reports/trunk/summary?access_token=' + token) Trunk Reports
+                                li
+                                    a(href='/api/v1/reports/top/extension?access_token=' + token) Top Usage Reports
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-group
+                                span Extensions
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li
+                                    a(href='/api/v1/extensions?access_token=' + token) Extensions
+                                li
+                                    a(href='/api/v1/organize?access_token=' + token) Groups
+                                li
+                                    a(href='#') Trunks
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-btc
+                                span Tariffs
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li
+                                    a(href='/api/v1/locations?access_token=' + token) Locations
+                                li
+                                    a(href='/api/v1/areacodes?access_token=' + token) Areacodes & Rates
+                        li.treeview
+                            a(href='#')
+                                i.fa.fa-gear
+                                span Configuration
+                                i.fa.fa-angle-left.pull-right
+                            ul.treeview-menu
+                                li
+                                a(href='/api/v1/usersM?access_token=' + token) Users
+                                li
+                                a(href='/api/v1/etbs-roles?access_token=' + token) Roles
+                                li
+                                a(href='/api/v1/etbs-permissions?access_token=' + token) Permissions
+
+
+            .content-wrapper
+                block content
+
+            footer.main-footer
+                .pull-right.hidden-xs
+                span Copyright &copy; 2016
+                    a(href='http://www.convergence.co.th')  Convergence Technology Co., Ltd.
+                |  All rights reserved.
+    script(type='text/javascript' src='/javascripts/jquery-2.1.4.min.js')
+    script(type='text/javascript' src='/javascripts/js.cookie.js')
+    script(type='text/javascript' src='/bootstrap/js/bootstrap.min.js')
+    script(type='text/javascript').
+        var AdminLTEOptions = {
+            //Enable sidebar expand on hover effect for sidebar mini
+            //This option is forced to true if both the fixed layout and sidebar mini
+            //are used together
+            sidebarExpandOnHover: true,
+            //BoxRefresh Plugin
+            enableBoxRefresh: true,
+            //Bootstrap.js tooltip
+            enableBSToppltip: true
+        }
+    script(type='text/javascript' src='/AdminLTE-2.3.3/dist/js/app.min.js')
+    script(type='text/javascript' src='/javascripts/app.func.js')
+
+    block script

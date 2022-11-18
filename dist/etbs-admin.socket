@@ -1,0 +1,8 @@
+[Unit]
+Description=eTBS Admin Socket
+
+[Socket]
+ListenStream=80
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,106 @@
+extend ../layout2
+
+block header
+
+block content
+    section.content-header
+        .row
+            .col-md-12
+                .box.box-primary
+                    .box-header.with-border
+                        i.fa.fa-cloud
+                        h3.box-title(data-i18n='Server Status') Server Status
+                        .box-tools.pull-right
+                          button.btn.btn-box-tool(type='button', data-widget='collapse')
+                            i.fa.fa-minus
+                    .box-body
+                        .col-md-3.col-sm-6.col-xs-12
+                            .info-box.bg-orange
+                                span.info-box-icon
+                                    i.fa.fa-plug
+                                .info-box-content
+                                    .info-box-text(data-i18n='connector') Connector
+                                        .span.pull-right.small
+                                            a#connector-control(href='javascript:void(0)', onclick='connectorControl()', style='color: white')
+                                                i.fa#connector-font
+                                    .info-box-number#connector-status(data-i18n='connector-status')
+                                    span.progress-description#connector-process
+                        .col-md-3.col-sm-6.col-xs-12
+                            .info-box.bg-red
+                                span.info-box-icon
+                                    i.fa.fa-calculator
+                                .info-box-content
+                                    .info-box-text(data-i18n='calculator') Calculator
+                                        .span.pull-right.small
+                                            a#calculator-control(href='javascript:void(0)', onclick='calculatorControl()', style='color: white')
+                                                i.fa#calculator-font
+                                    .info-box-number#calculator-status(data-i18n='calculator-status')
+                                    span.progress-description#calculator-process
+                        .col-md-3.col-sm-6.col-xs-12
+                            .info-box.bg-green
+                                span.info-box-icon
+                                    i.fa.fa-server
+                                .info-box-content
+                                    .info-box-text(data-i18n='diskfree') Disk Free
+                                    .info-box-number#disk-free
+                                    .progress
+                                        .progress-bar#disk-free-bar
+                                    span.progress-description#disk-free-percent
+                        .col-md-3.col-sm-6.col-xs-12.pull-right
+                            .info-box.bg-aqua
+                                span.info-box-icon
+                                    i.fa.fa-clock-o
+                                .info-box-content
+                                    .info-box-text#today
+                                    .info-box-number#now
+    section.content
+        .row
+            .chartbase.col-md-12
+        .row
+            .col-md-12
+                .box.box-success
+                    .box-header.with-border
+                        .col-md-2.col-sm-3.col-xs-6
+                            .checkbox
+                                label
+                                    input#show-outbound(type='checkbox', checked )
+                                    label( data-i18n='outbound') Outbound
+                        .col-md-2.col-sm-3.col-xs-6
+                            .checkbox
+                                label
+                                    input#show-inbound(type='checkbox' , data-i18n='inbound')
+                                    label( data-i18n='inbound' ) Inbound
+                    .box-body
+                        table.table.table-condensed.table-hover#recent-calls
+                            thead
+                                th(width="10%" , data-i18n='caller') Caller
+                                th(width="10%" , data-i18n='callername') Caller Name
+                                th(width="2%")
+                                th(width="10%" ,data-i18n='dialnumber') Dial Number
+                                th(width="10%" ,data-i18n='destination') Destination
+                                th(width="10%" ,data-i18n='starttime')  Start Time
+                                th(style='width: 80px' , data-i18n='duration') Duration
+                                th.text-right(width="10%" ,data-i18n='cost') Cost
+                                th.text-right.hidden-xs(width="10%" ,data-i18n='rate') Rate
+                                th.text-right.hidden-xs(width="10%" ,data-i18n='trunk') Trunk
+                            tbody
+
+block script
+    script(type='text/javascript', src='/javascripts/moment.min.js')
+    script(type='text/javascript', src='/javascripts/dashboard.func.js')
+    script(type='text/javascript', src='/javascripts/app.func.js')
+    script(type='text/javascript').
+        $(document).ready(function() {
+            getSystemInfo();
+            RenderChartBase();
+            setInterval(clock, 1000);
+            getChartData()
+            getRecentCalls()
+            getLicenseUsage("!{user}","!{ext_lic}");
+            Cookies.set('user',"!{user}");
+            Cookies.set('ext_lic',"!{ext_lic}");
+            console.log("!{user}","!{role}");
+            
+        });
+        
+        /*$(document).ajaxStart(function() { Pace.restart(); });*/

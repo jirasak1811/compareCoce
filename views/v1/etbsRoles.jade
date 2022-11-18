@@ -1,0 +1,70 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1(data-i18n='Roles Management') Roles Management
+  // Main content
+  section.content
+    .row
+      .col-xs-12
+        .box
+          .box-header
+            // h3.box-title Roles Management
+          // /.box-header
+          .box-body.table-responsive
+            p
+              a.btn.btn-success(href='/api/v1/etbs-roles/add?access_token=' + token , data-i18n='new') New
+            table#datatable-roles.table.table-bordered.table-striped
+              thead
+                tr
+                  th(data-i18n='Role Name') Role name
+                  th(data-i18n='Profile ID') Profile ID
+                  th(data-i18n='Active') Active
+                  th
+              tbody
+                each role in roles
+                  tr
+                    td= role.rolename
+                    td= role.profileid
+                    td 
+                      //if role.rolename != 'Admin' && role.rolename != 'Normal'
+                        a.edittable-selectActive(href='#', data-type='select',data-name='is_active', data-pk=role.rolename+','+role.profileid+','+token , data-title='Enter Active', data-i18n='[data-title]Enter Active' , data-value=role.is_active) #{role.is_active==1 ? 'Active' : 'InActive'}
+                      //else
+                      label #{role.is_active==1 ? 'Active' : 'InActive'}
+                    td(style='text-align: center')
+                      a.btn.btn-success.btn-xs.btn-role-edit(href='#' ,data-pk=role.rolename+','+role.profileid+','+token)
+                        i.fa.fa-pencil-square-o
+                      | 
+                      if role.rolename != 'Administrator'
+                        a.btn.btn-warning.btn-xs.btn-role-remove(href='#' ,data-pk=role.rolename+','+role.profileid+','+token)
+                          i.fa.fa-trash
+                      
+              tfoot
+                tr
+                  th(data-i18n='Role Name') Role name
+                  th(data-i18n='Profile ID') Profile ID
+                  th(data-i18n='Active') Active
+                  th
+          // /.box-body
+        // /.box
+  // /.content
+block script
+  // jQuery 2.2.0
+  //script(src='/AdminLTE-2.3.3/plugins/jQuery/jQuery-2.2.0.min.js')
+  // Bootstrap 3.3.6
+  // script(src='/AdminLTE-2.3.3/bootstrap/js/bootstrap.min.js', type='text/javascript')
+  // DataTables
+  script(src='/AdminLTE-2.3.3/plugins/datatables/jquery.dataTables.min.js', type='text/javascript')
+  script(src='/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.min.js', type='text/javascript')
+  script(type='text/javascript', src='/editable/bootstrap3-editable/js/bootstrap-editable.min.js')
+  // SlimScroll
+  // script(src='/AdminLTE-2.3.3/plugins/slimScroll/jquery.slimscroll.min.js', type='text/javascript')
+  // FastClick
+  // script(src='/AdminLTE-2.3.3/plugins/fastclick/fastclick.js', type='text/javascript')
+  // AdminLTE App
+  // script(src='/AdminLTE-2.3.3/dist/js/app.min.js', type='text/javascript')
+  // AdminLTE for demo purpose
+  script(src='/AdminLTE-2.3.3/dist/js/demo.js', type='text/javascript')
+  script(src='/javascripts/app.func.js', type='text/javascript')
+  // page script
+  script(src='/javascripts/tables/rolesDataTable.js' type='text/javascript')

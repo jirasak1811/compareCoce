@@ -1,0 +1,95 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1(data-i18n='authorize management') Authorize Management
+  // Main content
+  section.content
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            if action == '/api/v1/etbs-permissions/insert'
+              h3.box-title(data-i18n='new') New
+            else if action == '/api/v1/etbs-permissions/update/all'
+              h3.box-title(data-i18n='edit') Edit
+            else if action == '/etbs-permissions/delete'
+              h3.box-title(data-i18n='remove') Remove
+            else
+              h3 !{action}
+          // /.box-header
+          if error
+            .alert.alert-danger.alert-dismissible
+              button.close(type='button' data-dismiss='alert' aria-hidden=true) &times;
+              h4
+                i.icon.fa.fa-ban
+                label(data-i18n='Alert') Alert
+              label(data-i18n='Some value are not allow, please try again') Some value are not allow, please try again.
+          // form start
+          form(method='POST' action=action+'?access_token='+token)
+            .box-body
+              if permission != undefined
+                input#originPermission(type='hidden' name='originPermission' value=permission data-i18n='permission')
+              if profileid != undefined
+                input#originProfileid(type='hidden' name='originProfileid' value=profileid data-i18n='profileid')
+              if perm_type != undefined
+                input#originPerm_type(type='hidden' name='originPerm_type' value=perm_type data-i18n='perm_type')
+              .form-group
+                label(for='permission' , data-i18n='permission') Permission
+                input#permission.form-control(type='text', placeholder='Permission' name='permission' value=permission data-i18n='[placeholder]Permission' required)
+              if false
+                .form-group
+                  label(for='profileid' , data-i18n='Profile ID') Profile ID
+                  input#profileid.form-control(type='text', placeholder='Profile ID' name='profileid' value=profileid data-i18n='[placeholder]Profile ID' required)
+              .form-group
+                label(for='perm_type' , data-i18n='Permission Type') Permission Type
+                input#perm_type.form-control(type='text', placeholder='Permission Type' name='perm_type' value=perm_type data-i18n='[placeholder]Permission Type' required)
+              .form-group
+                label(for='is_active' , data-i18n='Active') Active
+                input#token.form-control(type='hidden' , name='token' value=token)
+                select#is_active.form-control(name='is_active')
+                    option(value='1') Active
+                    option(value='0') InActive
+              if rolename != undefined && false
+                .form-group
+                  label(for='rolename' , data-i18n='Role') Role
+                  p
+                    a(href= '/api/v1/etbs-permissions/roles/' + permission + '/' + profileid + '/' + perm_type )= rolename
+              if roles
+                .form-group
+                  label(for='role' , data-i18n='Roles ProfileID') Roles (Profile ID)
+                  select(name='role').form-control
+                    option -
+                    each role in roles
+                      option(selected=(role.profileid==profileid) value=role.profileid)= role.rolename + '(' + role.profileid + ')'
+              // /.box-body
+              .box-footer
+              if action == '/api/v1/etbs-permissions/insert'
+                button.btn.btn-primary(type='submit',data-i18n='create') Create
+              else if action == '/api/v1/etbs-permissions/update/all'
+                button.btn.btn-primary(type='submit',data-i18n='save') Save
+              else if action == '/api/v1/etbs-permissions/delete'
+                button.btn.btn-danger(type='submit',data-i18n='remove') Remove
+              else
+                h3 !{action}
+block script
+  // jQuery 2.2.0
+  //script(src='/AdminLTE-2.3.3/plugins/jQuery/jQuery-2.2.0.min.js')
+  // Bootstrap 3.3.6
+  // script(src='/AdminLTE-2.3.3/bootstrap/js/bootstrap.min.js', type='text/javascript')
+  // DataTables
+  //- script(src='/AdminLTE-2.3.3/plugins/datatables/jquery.dataTables.min.js', type='text/javascript')
+  //- script(src='/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.min.js', type='text/javascript')
+  // SlimScroll
+  // script(src='/AdminLTE-2.3.3/plugins/slimScroll/jquery.slimscroll.min.js', type='text/javascript')
+  // FastClick
+  // script(src='/AdminLTE-2.3.3/plugins/fastclick/fastclick.js', type='text/javascript')
+  // AdminLTE App
+  // script(src='/AdminLTE-2.3.3/dist/js/app.min.js', type='text/javascript')
+  // AdminLTE for demo purpose
+  //- script(src='/AdminLTE-2.3.3/dist/js/demo.js', type='text/javascript')
+  // page script
+  //- script(src='/javascripts/tables/rolesFormDataTable.js' type='text/javascript')
+  script(src='/javascripts/app.func.js', type='text/javascript')

@@ -1,0 +1,384 @@
+extends layout2
+block style
+  link(type='text/css' rel='stylesheet' href='/stylesheets/style.css')
+  link(type='text/css' rel='stylesheet' href='/javascripts/select2/css/select2.css')
+  link(type='text/css' rel='stylesheet' href='/javascripts/jstree-3.3.8/themes/default/style.css')
+
+block content
+  #page-wrapper
+    // BEGIN TITLE & BREADCRUMB PAGE
+    #title-breadcrumb-option-demo.page-title-breadcrumb
+      .page-header.pull-left
+        .page-title=title
+      ol.breadcrumb.page-breadcrumb.pull-left
+        li
+          i.fa.fa-home
+          
+          a(href='/b2e/') Home
+           
+          i.fa.fa-angle-right
+          &nbsp;
+        li.hidden
+          a(href='#')=title
+          i.fa.fa-angle-right
+        li.active=title
+
+      .clearfix
+    // END TITLE & BREADCRUMB PAGE
+    // BEGIN CONTENT
+    .page-content
+      .row
+        .col-lg-12
+          .portlet.box
+            .portlet-header
+              .caption 
+                | Report ID : 
+                =RID
+                input#inputRID.form-control.input-sm(type='hidden' value=RID)
+                input#inputStatus.form-control.input-sm(type='hidden' value=status)
+            .portlet-body
+              .layout-main.row
+                .layout-left.col-sm-3
+                  ui#ui_report_name.nav
+                    li
+                      span#menu-title 
+                        b Report Name
+                      i.fa.fa-angle-down
+                    hr
+                    li(class={'active-reportname': ReportName == 'Extension Summary'})
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Extension Summary' checked= ReportName == 'Extension Summary') 
+                        |  Extension Summary
+                    li(class={'active-reportname': ReportName == 'Extension Details'})
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Extension Details' checked= ReportName == 'Extension Details') 
+                        |  Extension Details
+                    li(class={'active-reportname': ReportName == 'Group Summary'})
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Group Summary' checked= ReportName == 'Group Summary') 
+                        |  Group Summary
+                    li(class={'active-reportname': ReportName == 'Group Details'})
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Group Details' checked= ReportName == 'Group Details') 
+                        |  Group Details
+                    //- li(class={'active-reportname': ReportName == 'Summary Report By Group'})
+                    //-   a#report_name(href='#')
+                    //-     input(type='radio' name='rd_reportname' value='Summary Report By Group') 
+                    //-     |  Summary Report By Group
+                    li(class={'active-reportname': ReportName == 'Trunk Summary'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Trunk Summary' checked= ReportName == 'Trunk Summary') 
+                        |  Trunk Summary
+                    li(class={'active-reportname': ReportName == 'Trunk Details'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Trunk Details' checked= ReportName == 'Trunk Details') 
+                        |  Trunk Details
+                    li(class={'active-reportname': ReportName == 'Dialled Number Summary'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Dialled Number Summary' checked= ReportName == 'Dialled Number Summary')
+                        |  Dialled Number Summary
+                    li(class={'active-reportname': ReportName == 'Dialled Number Details'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Dialled Number Details' checked= ReportName == 'Dialled Number Details') 
+                        |  Dialled Number Details
+                    li(class={'active-reportname': ReportName == 'Destination Summary'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Destination Summary' checked= ReportName == 'Destination Summary') 
+                        |  Destination Summary
+                    li(class={'active-reportname': ReportName == 'Destination Details'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Destination Details' checked= ReportName == 'Destination Details') 
+                        |  Destination Details
+                    //- li(class={'active-reportname': ReportName == 'User Details'}) 
+                    //-   a#report_name(href='#')
+                    //-     input(type='radio' name='rd_reportname' value='User Details' checked= ReportName == 'User Details') 
+                    //-     |  User Details
+                    li(class={'active-reportname': ReportName == 'Top Extension Usage'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Top Extension Usage' checked= ReportName == 'Top Extension Usage') 
+                        |  Top Extension Usage
+                    li(class={'active-reportname': ReportName == 'Top Destination Usage'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Top Destination Usage' checked= ReportName == 'Top Destination Usage') 
+                        |  Top Destination Usage
+                    li(class={'active-reportname': ReportName == 'Top Dialled Number Usage'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Top Dialled Number Usage' checked= ReportName == 'Top Dialled Number Usage') 
+                        |  Top Dialled Number Usage
+                    li(class={'active-reportname': ReportName == 'Top Trunk Usage'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Top Trunk Usage' checked= ReportName == 'Top Trunk Usage') 
+                        |  Top Trunk Usage
+
+
+                    //- new report
+                    li(class={'active-reportname': ReportName == 'User Details'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='User Details' checked= ReportName == 'User Details') 
+                        |  User Details
+                    li(class={'active-reportname': ReportName == 'Account Code Summary'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Account Code Summary' checked= ReportName == 'Account Code Summary') 
+                        |  Account Code Summary
+                    li(class={'active-reportname': ReportName == 'Account Code Details'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Account Code Details' checked= ReportName == 'Account Code Details') 
+                        |  Account Code Details
+                    li(class={'active-reportname': ReportName == 'Summary Report'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Summary Report' checked= ReportName == 'Summary Report') 
+                        |  Summary Report
+                    li(class={'active-reportname': ReportName == 'Summary Report By Group'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Summary Report By Group' checked= ReportName == 'Summary Report By Group') 
+                        |  Summary Report By Group
+                    li(class={'active-reportname': ReportName == 'Tranfer Call'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Tranfer Call' checked= ReportName == 'Tranfer Call') 
+                        |  Tranfer Call
+                    li(class={'active-reportname': ReportName == 'Monthly Summary'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Monthly Summary' checked= ReportName == 'Monthly Summary') 
+                        |  Monthly Summary
+                    li(class={'active-reportname': ReportName == 'Monthly Charge Summary'}) 
+                      a#report_name(href='#')
+                        input(type='radio' name='rd_reportname' value='Monthly Charge Summary' checked= ReportName == 'Monthly Charge Summary') 
+                        |  Monthly Charge Summary
+                .layout-right.col-sm-9
+
+                  .form-group#start_date
+                    label.col-md-3.control-label Start Date
+                    .col-md-9
+                      .input.right
+                        input#inputStartDate.form-control.input-sm(type='datetime-local' placeholder='' value=StartDate)
+
+                  .form-group#end_date
+                    label.col-md-3.control-label End Date
+                    .col-md-9
+                      .input.right
+                        //- datetime-local
+                        input#inputEndDate.form-control.input-sm(type='datetime-local' placeholder='' value=EndDate)
+
+                  .form-group#data_type
+                    label.col-md-3.control-label Data Type
+                    .col-md-9
+                      select#sl_DataType.form-control.input-sm
+                        option(value='-') - Please Select - 
+                        option(value='Today' selected= DataType == 'Today') Today
+                        option(value='Yesterday' selected= DataType == 'Yesterday') Yesterday
+                        option(value='ThisWeek' selected= DataType == 'ThisWeek') This Week
+                        option(value='LastWeek' selected= DataType == 'LastWeek') Last Week
+                        option(value='ThisMonth' selected= DataType == 'ThisMonth') This Month
+                        option(value='LastMonth' selected= DataType == 'LastMonth') Last Month
+                        option(value='Yeartodate' selected= DataType == 'Yeartodate') Year to date
+                        option(value='MonthlyCustom' selected= DataType == 'MonthlyCustom') Monthly Custom
+
+                  .form-group#start_monthly
+                    label.col-md-3.control-label Start Date Monthly
+                    .col-md-2
+                      .input.right
+                        input#inputStartMonthly.form-control.input-sm(type='number' placeholder='' min='1' max='31' value=(MonthlyCustom == null || MonthlyCustom == 0 ? '0' : MonthlyCustom))
+
+                  .form-group#ckb_calltype(style='margin-top:35px;')
+                    label.col-md-3.control-label Call Type
+                    .col-md-9
+                      .input.right
+                        input#sl_CT_INT.form-control.input-sm(type='checkbox' placeholder='' value='1' checked= CT_INT == 1) 
+                        |  Internal  
+                        input#sl_CT_INC.form-control.input-sm(type='checkbox' placeholder='' value='2' checked= CT_INC == 2) 
+                        |  Incoming  
+                        input#sl_CT_OUT.form-control.input-sm(type='checkbox' placeholder='' value='3' checked= CT_OUT == 3)
+                        |  Outgoing  
+
+                  .form-group#ckb_tolltype
+                    label.col-md-3.control-label Toll Type
+                    .col-md-9
+                      .input.right
+                        input#sl_TT_UNK.form-control.input-sm(type='checkbox' placeholder='' value='0' checked= TT_UNK == 0) 
+                        |  Unknow  
+                        input#sl_TT_FRE.form-control.input-sm(type='checkbox' placeholder='' value='1' checked= TT_FRE == 1) 
+                        |  Hot Line  
+                        input#sl_TT_LOC.form-control.input-sm(type='checkbox' placeholder='' value='2' checked= TT_LOC == 2)
+                        |  Local  
+                        input#sl_TT_MOB.form-control.input-sm(type='checkbox' placeholder='' value='3' checked= TT_MOB == 3)
+                        |  Mobile  
+                        input#sl_TT_LON.form-control.input-sm(type='checkbox' placeholder='' value='4' checked= TT_LON == 4)
+                        |  Domestic  
+                        input#sl_TT_OVE.form-control.input-sm(type='checkbox' placeholder='' value='5' checked= TT_OVE == 5)
+                        |  International  
+
+                  //- .form-group#incoming
+                  //-   label.col-md-3.control-label Incoming
+                  //-   .col-sm-3
+                  //-     select#sl_CT_INC.form-control.input-sm
+                  //-       option(value='1', selected= CT_INC == 1) Yes
+                  //-       option(value='-1', selected= CT_INC == -1) No
+                  //- .form-group#outgoing
+                  //-   label.col-md-3.control-label Outgoing
+                  //-   .col-sm-3
+                  //-     select#sl_CT_OUT.form-control.input-sm
+                  //-       option(value='3', selected= CT_OUT == 3) Yes
+                  //-       option(value='-1', selected= CT_OUT == -1) No
+                  //- .form-group#local
+                  //-   label.col-md-3.control-label Local
+                  //-   .col-sm-3
+                  //-     select#sl_TT_LOC.form-control.input-sm
+                  //-       option(value='2', selected= TT_LOC == 2) Yes
+                  //-       option(value='-1', selected= TT_LOC == -1) No
+
+                  //- .form-group#mobile
+                  //-   label.col-md-3.control-label Mobile
+                  //-   .col-md-3
+                  //-     select#sl_TT_MOB.form-control.input-sm
+                  //-       option(value='3', selected= TT_MOB == 3) Yes
+                  //-       option(value='-1', selected= TT_MOB == -1) No
+                  //- .form-group#dometic
+                  //-   label.col-md-3.control-label Dometic
+                  //-   .col-md-3
+                  //-     select#sl_TT_LON.form-control.input-sm
+                  //-       option(value='4', selected= TT_LON == 4) Yes
+                  //-       option(value='-1', selected= TT_LON == -1) No
+                  //- .form-group#international
+                  //-   label.col-md-3.control-label International
+                  //-   .col-md-3
+                  //-     select#sl_TT_OVE.form-control.input-sm
+                  //-       option(value='5', selected= TT_OVE == 5) Yes
+                  //-       option(value='-1', selected= TT_OVE == -1) No
+
+                  .form-group#ext_type
+                    label.col-md-3.control-label Ext Type
+                    .col-md-9
+                      select#sl_ExtType.form-control.input-sm
+                        option(value='1') - Please Select - 
+                        option(value='0', selected= ExtType == 0) All
+                        option(value='1', selected= ExtType == 1) Range
+                        option(value='2', selected= ExtType == 2) Select
+                  .form-group#ext_from
+                    label.col-md-3.control-label Ext From
+                    .col-md-9
+                      .input.right
+                        input#inputExtFrom.form-control.input-sm(type='text' placeholder='' value=(ExtFrom == null ? '0' : ExtFrom))
+                  .form-group#ext_to
+                    label.col-md-3.control-label Ext To
+                    .col-md-9
+                      .input.right
+                        input#inputExtTo.form-control.input-sm(type='text' placeholder='' value=(ExtTo == null ? '0' : ExtTo))
+                  .form-group#ext
+                    label.col-md-3.control-label Ext
+                    .col-md-9
+                      .input.right
+                        input#inputExt.form-control.input-sm(type='text' placeholder='' value=(Exts == null || Exts == '' ? '0' : Exts))
+                  .form-group#acc_from
+                    label.col-md-3.control-label Account From
+                    .col-md-9
+                      .input.right
+                        input#inputAccFrom.form-control.input-sm(type='text' placeholder='' value=(AccF == null ? '0' : AccF))
+                  .form-group#acc_to
+                    label.col-md-3.control-label Account To
+                    .col-md-9
+                      .input.right
+                        input#inputAccTo.form-control.input-sm(type='text' placeholder='' value=(AccT == null ? '0' : AccT))
+                  .form-group#sl_group
+                    label.col-sm-3.control-label(for='dtpDateTimeFrom') Group
+                    .col-sm-9
+                      input#sl_Group(type='text' value=(GroupID) hidden) 
+                      #treeGroup.jstree-form
+
+                  //- .form-group#sl_group
+                  //-   label.col-md-3.control-label Group
+                  //-   .col-md-9
+                  //-     select#sl_Group.form-control.input-sm
+                  //-       //option(value='1') - Please Select - 
+                  //-       each val, index in GroupName
+                  //-         option(value=index, selected= GroupID ==index)= val
+                  .form-group#route_from
+                    label.col-md-3.control-label Route From
+                    .col-md-9
+                      .input.right
+                        input#inputRouteFrom.form-control.input-sm(type='text' placeholder='' value=(RouteF == null || RouteF == '' ? '0' : RouteF))
+                  .form-group#route_to
+                    label.col-md-3.control-label Route To
+                    .col-md-9
+                      .input.right
+                        input#inputRouteTo.form-control.input-sm(type='text' placeholder='' value=(RouteT == null || RouteT == '' ? '0' : RouteT))
+                  .form-group#trunk_from
+                    label.col-md-3.control-label Trunk From
+                    .col-md-9
+                      .input.right
+                        input#inputTrunkFrom.form-control.input-sm(type='text' placeholder='' value=(TrunkF == null || TrunkF == '' ? '0' : TrunkF))
+                  .form-group#trunk_to
+                    label.col-md-3.control-label Trunk To
+                    .col-md-9
+                      .input.right
+                        input#inputTrunkTo.form-control.input-sm(type='text' placeholder='' value=(TrunkT == null || TrunkT == '' ? '0' : TrunkT))
+
+                  .form-group#destination
+                    label.col-md-3.control-label Toll Type
+                    .col-md-9
+                        select#optTollType.form-control.input-sm
+                          option(value='-') - Please Select - 
+                          option(value='0') Unknow
+                          option(value='1') Hot Line
+                          option(value='2') Local
+                          option(value='3') Mobile
+                          option(value='4') Domestic
+                          option(value='5') International
+                  .form-group#destination
+                    label.col-md-3.control-label Destination
+                    .col-md-9
+                      .input.right
+                        select#inputDestination.form-control.input-sm
+                          option(value=(Destination == null || Destination == '-' || Destination == '' ? '-' : Destination))=Destination == null || Destination == '-' || Destination == '' ? '- Please Select - ' : Destination
+                        //input#inputDestination.form-control.input-sm(type='text' placeholder='' value=(Destination == null || Destination == '' ? '-' : Destination))
+                  .form-group#dialled_no
+                    label.col-md-3.control-label Dialled No
+                    .col-md-9
+                      .input.right
+                        input#inputDialledNo.form-control.input-sm(type='text' placeholder='' value=(DialledNo == null || DialledNo == '' ? '-' : DialledNo))
+                  .form-group#user_detail_type
+                    label.col-md-3.control-label User Detail Type
+                    .col-md-9
+                      select#inputUserDetailType.form-control.input-sm
+                        option(value='-') - Please Select - 
+                        option(value='All' selected= UserDetailType == 'All') All Users
+                        option(value='HaveGroup' selected= UserDetailType == 'HaveGroup') HaveGroup
+                        option(value='NoGroup' selected= UserDetailType == 'NoGroup') NoGroup
+                  .form-group#top_usage_by
+                    label.col-md-3.control-label Top Usage By
+                    .col-md-9
+                      select#inputTopUsageBy.form-control.input-sm
+                        option(value='-') - Please Select - 
+                        option(value='NumberCalls' selected= TopUsageBy == 'NumberCalls') Number of Calls
+                        option(value='TotalCharge' selected= TopUsageBy == 'TotalCharge') Total Charge
+                        option(value='CallDuration' selected= TopUsageBy == 'CallDuration') Call Duration
+                        //option(value='TollType' selected= TopUsageBy == 'TollType') Toll Type
+                  .form-group#top
+                    label.col-md-3.control-label Top
+                    .col-md-9
+                      select#inputTop.form-control.input-sm
+                        //- option(value='-' ) - Please Select - 
+                        option(value='10' selected= Top == '10') 10
+                        //- option(value='20' selected= Top == '20') 20
+                        //- option(value='30' selected= Top == '30') 30
+                        //- option(value='40' selected= Top == '40') 40
+                        //- option(value='50' selected= Top == '50') 50
+
+
+
+                  .form-group#save
+                    .col-md-10
+                    .col-md-1
+                      button#btn_save.btn.btn-success(type='button')  Save 
+
+
+
+
+block script
+  script(src='/theme/madmin-v5.2/vendors/DataTables/media/js/jquery.dataTables.js')
+  script(src='/theme/madmin-v5.2/vendors/DataTables/media/js/dataTables.bootstrap.js')
+  script(src='/theme/madmin-v5.2/vendors/DataTables/jquery.jeditable.js')
+  script(src='/theme/madmin-v5.2/js/table-editable.js')
+  script(src='/javascripts/select2/js/select2.js')
+  script(src='/javascripts/jstree-3.3.8/jstree.js')
+
+  script(src='/javascripts/b2e/report_editor.js')

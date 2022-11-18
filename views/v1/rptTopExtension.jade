@@ -1,0 +1,87 @@
+extend ../layout2
+extend etbsRoles
+
+block header
+
+block content
+
+	// Content Header (Page header)
+	section.content-header
+		h1
+			label(data-i18n='Report') Reports
+			small(data-i18n='trunks') Trunks
+		ol.breadcrumb
+			li
+				a(href='/api/v1/reports/trunk?access_token=' + token)
+					i.fa.fa-group
+					label(data-i18n='Report') Reports
+			li.active(data-i18n='trunks') Trunks
+	// Main content
+	section.content
+		// Small boxes (Stat box)
+		.row
+			include rptMenuLayout
+
+			.col-md-9
+				.modal-content
+					.modal-header
+						h4.modal-title(data-i18n="top extension usage report") Top Extension Usage Report
+					.modal-body
+						form#newTrunkForm.form-horizontal
+							.form-group
+								label.col-sm-2.control-label(for='dtpDateTimeFrom' , data-i18n="reportdate") Report Date
+								.col-sm-10
+									.row
+										.col-sm-6
+											select#optReportDate.form-control
+												option(value='Today' , data-i18n='Today') Today
+												option(value='Yesterday',data-i18n='Yesterday') Yesterday
+												option(value='This Week',data-i18n='This Week') This Week
+												option(value='Last Week',data-i18n='Last Week') Last Week
+												option(value='This Month',data-i18n='This Month') This Month
+												option(value='Last Month',data-i18n='Last Month') Last Month
+												option(value='Year to date',data-i18n='Year to date') Year to date
+												option(value='Manual Select',data-i18n='Manual Select') Manual Select
+							.form-group
+								label.col-sm-2.control-label(for='dtpDateTimeFrom',data-i18n="DateTimeFrom") Date Time From
+								.col-sm-10
+									.row
+										.col-sm-6
+											input#dtpDateFrom.form-control(name='date_from' type='date')
+										.col-sm-6
+											input#dtpTimeFrom.form-control(name='time_from' type='time' step="1")
+							.form-group
+								label.col-sm-2.control-label(for='dtpDateTimeTo',data-i18n="DateTimeTo") Date Time To
+								.col-sm-10
+									.row
+										.col-sm-6
+											input#dtpDateTo.form-control(name='date_to' type='date')
+										.col-sm-6
+											input#dtpTimeTo.form-control(name='time_to' type='time' step="1")
+							.form-group
+								label.col-sm-2.control-label(for='txtRouteFrom',data-i18n='usage type') Usage Type
+								.col-sm-10
+									.row
+										.col-sm-6
+											select#optUsageType.form-control
+												option(value='TopExtensionByNumOfCall' , data-i18n='number of calls') Number of Calls
+												option(value='TopExtensionByTotalCharge' , data-i18n='total charges') Total Charges
+												option(value='TopExtensionByCallDuration' , data-i18n='call durations') Call Durations
+							.form-group
+								label.col-sm-2.control-label(for='txtRouteTo',data-i18n='rank value') Rank Value
+								.col-sm-10
+									.row
+										.col-sm-6
+											select#optRankValue.form-control
+												option(value='10') 10
+
+							
+					.modal-footer
+						button.btn-rpt-ok.btn.btn-primary(type='button',data-i18n="viewreport") View Report
+						
+
+block script
+	script(type='text/javascript' src='/javascripts/moment.js')
+	script(type='text/javascript' src='/javascripts/optReportDate.js')
+	script(type='text/javascript' src='/javascripts/app.func.js')
+	script(type='text/javascript' src='/javascripts/rptTopExtension.js')

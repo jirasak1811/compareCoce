@@ -1,0 +1,149 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1(data-i18n='User Management') User Management
+  // Main content
+  section.content
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            if action == '/api/v1/etbs-users/insert'
+              h3.box-title(data-i18n='new') New
+            else if action == '/api/v1/etbs-users/update'
+              h3.box-title(data-i18n='edit') Edit
+            else
+              h3.box-title(data-i18n='remove') Remove
+          // /.box-header
+          if error
+            .alert.alert-danger.alert-dismissible
+              button.close(type='button' data-dismiss='alert' aria-hidden=true) &times;
+              h4
+                i.icon.fa.fa-ban
+                label(data-i18n='Alert') Alert
+              label(data-i18n='Some value are not allow, please try again') Some value are not allow, please try again.
+          // form start
+          form(method='POST' action=action)
+            .box-body
+              if username != undefined
+                input#originUsername(type='hidden' name='originUsername' value=username)
+              .form-group
+                label(for='username' , data-i18n='Username') Username
+                input#username.form-control(type='text' placeholder='Username' name='username' value=username required)
+              .form-group
+                label(for='password' , data-i18n='Password') Password
+                input#password.form-control(type='password' name='password' value=password required)
+              .form-group
+                label(for='retypePassword' , data-i18n='Re-type Password') Re-type Password
+                input#retypePassword.form-control(type='password' name='retypePassword' value=password required)
+              if false
+                .form-group
+                  label(for='clientid' , data-i18n='Client ID') Client ID
+                  input#clientid.form-control(type='text' placeholder='Client ID' name='clientid' value=clientid)
+              if organizations != undefined
+                .form-group
+                  label(for='organization' , data-i18n='Organization Client ID') Organization(Client ID)
+                  select(name='organization').form-control
+                    option -
+                    each org in organizations
+                      option(selected=(org.clientid==clientid) value=org)= org.org_name + '(' + org.clientid + ')'
+              if false
+                .form-group
+                  label(for='extension' , data-i18n='extension') Extension
+                  input#extension.form-control(type='text' placeholder='Extension' name='extension' value=extension , data-i18n='[placeholder]extension')
+              if extensions != undefined
+                .form-group
+                  label(for='extensionComboBox' , data-i18n='extension') Extension
+                  select(name='extensionComboBox').form-control
+                    option -
+                    each ext in extensions
+                      option(selected=(ext.extension==extension) value=ext)= ext.extension
+              .form-group
+                label(for='name' , data-i18n='Name') Name
+                input#name.form-control(type='text' placeholder='Name' name='name' value=name , data-i18n='[placeholder]Name')
+              .form-group
+                label(for='logo' , data-i18n='Logo') Logo
+                input#logo.form-control(type='text' placeholder='Logo' name='logo' value=logo , data-i18n='[placeholder]Logo')
+              .form-group
+                label(for='company' , data-i18n='Company') Company
+                input#company.form-control(type='text' placeholder='Company' name='company' value=company , data-i18n='[placeholder]Company')
+              .form-group
+                label(for='email' , data-i18n='Email') Email
+                input#email.form-control(type='email' placeholder='Email' name='email' value=email , data-i18n='[placeholder]Email')
+              .form-group
+                label(for='mobile' , data-i18n='mobile') Mobile
+                input#mobile.form-control(type='tel' placeholder='Mobile' name='mobile' value=mobile pattern='[0-9]{10}' , data-i18n='[placeholder]mobile')
+              .form-group
+                label(for='fax' , data-i18n='Fax') Fax
+                input#fax.form-control(type='tel' placeholder='Fax' name='fax' value=fax pattern='[0-9]{10}' , data-i18n='[placeholder]Fax')
+              .form-group
+                label(for='is_active' , data-i18n='Active') Active
+                input#is_active.form-control(type='text' placeholder='Active' name='is_active' value=is_active , data-i18n='[placeholder]Active')
+              if rolename != undefined && false
+                .form-group
+                  label(for='roles' , data-i18n='Role') Role
+                  p
+                    a(href= '/api/v1/etbs-users/roles/' + username)= rolename ? rolename : 'Not yet assign role'
+              if roles != undefined
+                .form-group
+                  label(for='role' , data-i18n='Role') Role
+                  select(name='role').form-control
+                    each role in roles
+                      option(selected=(role.rolename==rolename) value=role)= role.rolename
+              if cnt != undefined && false
+                .form-group
+                  label(for='cnt' , data-i18n='groups') Groups
+                  p
+                    a(href= '/api/v1/etbs-users/user-group/' + username)= cnt + ' group(s)'
+              if groups
+                .form-group
+                  label(data-i18n='groups') Groups
+                  .box-body
+                    table#datatable-users-form.table.table-bordered.table-hover
+                      thead
+                        tr
+                          th
+                          th(data-i18n='Group ID') Group ID
+                          th(data-i18n='Group Name') Group Name
+                      tbody
+                        each group in groups
+                          tr
+                            td
+                              input(type='checkbox' name='groups' value=group checked=(group.username && group.username == username))
+                            td= group.group_id
+                            td= group.group_name
+                      tfoot
+                        tr
+                          th
+                          th(data-i18n='Group ID') Group ID
+                          th(data-i18n='Group Name') Group Name
+              // /.box-body
+              .box-footer
+              if action == '/api/v1/etbs-users/insert'
+                button.btn.btn-primary(type='submit' , data-i18n='create') Create
+              else if action == '/api/v1/etbs-users/update'
+                button.btn.btn-primary(type='submit' , data-i18n='save') Save
+              else
+                button.btn.btn-danger(type='submit' , data-i18n='remove') Remove
+block script
+  // jQuery 2.2.0
+  script(src='/AdminLTE-2.3.3/plugins/jQuery/jQuery-2.2.0.min.js')
+  // Bootstrap 3.3.6
+  // script(src='/AdminLTE-2.3.3/bootstrap/js/bootstrap.min.js', type='text/javascript')
+  // DataTables
+  script(src='/AdminLTE-2.3.3/plugins/datatables/jquery.dataTables.min.js', type='text/javascript')
+  script(src='/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.min.js', type='text/javascript')
+  // SlimScroll
+  // script(src='/AdminLTE-2.3.3/plugins/slimScroll/jquery.slimscroll.min.js', type='text/javascript')
+  // FastClick
+  // script(src='/AdminLTE-2.3.3/plugins/fastclick/fastclick.js', type='text/javascript')
+  // AdminLTE App
+  // script(src='/AdminLTE-2.3.3/dist/js/app.min.js', type='text/javascript')
+  // AdminLTE for demo purpose
+  script(src='/AdminLTE-2.3.3/dist/js/demo.js', type='text/javascript')
+  // page script
+  script(src='/javascripts/tables/usersFormDataTable.js' type='text/javascript')
+  script(src='/javascripts/app.func.js', type='text/javascript')

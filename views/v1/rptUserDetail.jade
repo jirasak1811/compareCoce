@@ -1,0 +1,49 @@
+extend ../layout2
+extend etbsRoles
+
+block header
+
+block content
+
+	// Content Header (Page header)
+	section.content-header
+		h1
+			label(data-i18n='Report') Reports
+			small(data-i18n='trunks') Trunks
+		ol.breadcrumb
+			li
+				a(href='/api/v1/reports/trunk?access_token=' + token)
+					i.fa.fa-group
+					label(data-i18n='Report') Reports
+			li.active(data-i18n='trunks') Trunks
+	// Main content
+	section.content
+		// Small boxes (Stat box)
+		.row
+			include rptMenuLayout
+
+			.col-md-9
+				.modal-content
+					.modal-header
+						h4.modal-title(data-i18n='user details report') User Details Report
+					.modal-body
+						form#newTrunkForm.form-horizontal
+							.form-group
+								label.col-sm-4.control-label(for='optUserDetail' , data-i18n='select user details') Select User Details
+								.col-sm-8
+									.row
+										.col-sm-8
+											select#optUserDetail.form-control
+												option(value='UserDetails1' , data-i18n='all users') All Users
+												option(value='UserDetails2' , data-i18n='have group users') Have Group Users
+												option(value='UserDetails3' , data-i18n='no group users') No Group Users
+							
+							
+					.modal-footer
+						button.btn-rpt-ok.btn.btn-primary(type='button',data-i18n="viewreport") View Report
+						
+
+block script
+	script(type='text/javascript' src='/javascripts/moment.js')
+	script(type='text/javascript' src='/javascripts/app.func.js')
+	script(type='text/javascript' src='/javascripts/rptUserDetail.js')

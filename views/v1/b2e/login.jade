@@ -1,0 +1,47 @@
+extends layout_login
+
+block content
+
+  span.logo-text(style="display: block; margin-left:20px; margin-top:10px; font-weight: bold; font-family: 'Oswald', sans-serif; font-size: 30px;")
+    | TBS² B2E
+
+  .page-form
+    .header-content
+      h1(style="font-family: 'Oswald', sans-serif;") Log In
+    .body-content
+      .form-group
+        .input-icon.right
+          i.fa.fa-user
+          input#mUsername.form-control(type='text' placeholder='Username' name='username')
+      .form-group
+        .input-icon.right
+          i.fa.fa-key
+          input#mPassword.form-control(type='password' placeholder='Password' name='password')
+
+      #div_btn_login.form-group.pull-right
+        button#btn_login.btn.btn-success
+          | Log In 
+          i.fa.fa-chevron-circle-right
+      .clearfix
+      //- .forget-password
+      //-   h4 Forgotten your Password?
+      //-   p
+      //-     | no worries, click 
+      //-     a.btn-forgot-pwd(href='#') here
+      //-     |  to reset your password.
+      //- hr
+      //- p
+      //-   | Don't have an account? 
+      //-   a#btn-register(href='extra-signup.html') Register Now
+
+
+
+  // END CONTENT
+  // BEGIN FOOTER
+
+  // END FOOTER
+  // END PAGE WRAPPER
+
+
+block script
+  script(src='/javascripts/b2e/users.js')

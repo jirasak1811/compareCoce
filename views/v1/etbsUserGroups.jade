@@ -1,0 +1,56 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1(data-i18n='Users Management') Users Management
+  // Main content
+  section.content
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            h3.box-title 
+                label Groups of username 
+                label #{username} 
+                label relate in
+          .box-body.pad.table-responsive
+            p
+              a(href='/api/v1/etbs-users/edit/' + username , data-i18n='Back to Form') Back to Form
+            table.table.table-bordered.text-center
+              tr
+                th(data-i18n='Username') Username
+                th(data-i18n='Group name') Group name
+                th
+              each group in groups
+                tr
+                  td= group.username
+                  td= group.group_name
+                  td
+                    form(method='POST' action='/api/v1/etbs-users/user-group/delete')
+                      input#username(type='hidden' name='username' value=group.username)
+                      input#groupId(type='hidden' name='groupId' value=group.group_id)
+                      button.btn.btn-danger(type='submit' , data-i18n='remove') Remove
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            h3.box-title(data-i18n='Other user') Other user
+          .box-body.pad.table-responsive
+            table.table.table-bordered.text-center
+              tr
+                th(data-i18n='Group ID') Group ID
+                th(data-i18n='Group name') Group name
+                th
+              each unGroup in unGroups
+                tr
+                  td= unGroup.group_id
+                  td= unGroup.group_name
+                  td
+                    form(method='POST' action='/api/v1/etbs-users/user-group/insert')
+                      input#preUsername(type='hidden' name='preUsername' value=username)
+                      input#unGroupId(type='hidden' name='unGroupId' value=unGroup.group_id)
+                      button.btn.btn-primary(type='submit' , data-i18n='Apply') Apply

@@ -1,0 +1,61 @@
+block content
+	.col-md-3.report-menu
+	//.col-md-3.report-menu
+		ui
+			b(data-i18n='User Reports') - User Reports
+			li#rptExtensionSummary
+				a(href='/api/v1/reports/user/extension/summary?access_token=' + token , data-i18n='extension summary report')| Extensions Summary Report
+			li#rptExtensionDetail
+				a(href='/api/v1/reports/user/extension/detail?access_token=' + token , data-i18n='extensions detail report')| Extensions Detail Report
+			li#rptGroupSummary
+				a(href='/api/v1/reports/user/group/summary?access_token=' + token , data-i18n='group summary report')| Group Summary Report
+			li#rptGroupDetail
+				a(href='/api/v1/reports/user/group/detail?access_token=' + token , data-i18n='group detail report')| Group Detail Report
+		ui
+			b(data-i18n='Admin Reports') - Admin Reports
+			li#rptDestinationSummary
+				a(href='/api/v1/reports/admin/destination/summary?access_token=' + token , data-i18n='destination summary report')| Destination Summary Report
+			li#rptDestinationDetail
+				a(href='/api/v1/reports/admin/destination/detail?access_token=' + token , data-i18n='destination details report')| Destination Details Report
+			li#rptDialledSummary
+				a(href='/api/v1/reports/admin/diallednumber/summary?access_token=' + token , data-i18n='dialled number summary report')| Dialled Number Summary Report
+			li#rptDialledDetail
+				a(href='/api/v1/reports/admin/diallednumber/detail?access_token=' + token , data-i18n='dialled number detail report')| Dialled Number Detail Report
+			li#rptUserDetail
+				a(href='/api/v1/reports/admin/user/detial?access_token=' + token , data-i18n='user details report')| User Details Report
+			li#rptAccoutCodeSummary
+				a(href='/api/v1/reports/admin/accountcode/summary?access_token=' + token , data-i18n='account code summary report')| Account Code Summary Report
+			li#rptAccoutCodeDetail
+				a(href='/api/v1/reports/admin/accountcode/detail?access_token=' + token , data-i18n='account code details report')| Account Code Details Report
+			li#rptSummary
+				a(href='/api/v1/reports/admin/summary?access_token=' + token , data-i18n='summary report')| Summary Report
+			li#rptSummaryByGroup
+				a(href='/api/v1/reports/admin/summary/group?access_token=' + token , data-i18n='summary report by group')| Summary Report By Group
+			li#rptTranferCall
+				a(href='/api/v1/reports/admin/tranfer/call?access_token=' + token , data-i18n='tranfer call report')| Tranfer Call Report
+		ui
+			b(data-i18n='Trunk Reports') - Trunk Reports
+			li#rptTrunkSummary
+				a(href='/api/v1/reports/trunk/summary?access_token=' + token , data-i18n='trunk summary report')| Trunk Summary Report
+			li#rptTrunkDetail
+				a(href='/api/v1/reports/trunk/detail?access_token=' + token , data-i18n='trunk detail report')| Trunk Detail Report
+		ui
+			b(data-i18n='Top Usage Reports') - Top Usage Reports
+			li#rptTopExtension
+				a(href='/api/v1/reports/top/extension?access_token=' + token , data-i18n='top extension usage report')| Top Extension Usage Report
+			li#rptTopDestination
+				a(href='/api/v1/reports/top/destination?access_token=' + token , data-i18n='top destination usage report')| Top Destination Usage Report
+			li#rptTopDailled
+				a(href='/api/v1/reports/top/diallednumber?access_token=' + token , data-i18n='top dialled number usage report')| Top Dialled Number Usage Report
+			li#rptTopTrunk
+				a(href='/api/v1/reports/top/trunk?access_token=' + token , data-i18n='top trunk usage report')| Top Trunk Usage Report
+		ui
+			b(data-i18n='Chart Reports') - Chart Reports
+			li#rptMonthlySummary
+				a(href='/api/v1/reports/chart/summary?access_token=' + token , data-i18n='monthly summary report')| Monthly Summary Report
+			li#rptMonthlyChargeSummary
+				a(href='/api/v1/reports/chart/summary/charge?access_token=' + token , data-i18n='monthly charge summary report')| Monthly Charge Summary Report
+
+block script
+	script(type='text/javascript' src='/javascripts/js.cookie.js')
+	script(src='lib/bootstrap/js/bootstrap.min.js')

@@ -1,0 +1,359 @@
+var express = require('express');
+var passport = require('passport');
+var router = express.Router();
+var database = require('./database');
+var ConnectRoles = require('connect-roles');
+var config = require('../../config/config.json');
+var roles = new ConnectRoles();
+
+// set grant user for can view dashboard role
+roles.use('view reports', function (req) {
+    // allow for user role
+    if (req.user.role === 'user') {
+        return true;
+    }
+})
+
+//admin users can access all pages
+roles.use(function (req) {
+    if (req.user.role != '') {
+        return true;
+    }
+});
+/* GET home page. */
+router.get('/', function (req, res, next) {
+    res.render('v1/rptExtensionSummary', {
+        title: 'Extension Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.cookies.user).toString()]).access_token,
+        user: req.cookies.user,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.cookies.user).toString()]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.cookies.user).toString()]).created_at,
+    });
+});
+
+/* User Reports */
+router.get('/user/extension/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptExtensionSummary', {
+        title: 'Extensions Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+router.get('/user/extension/summary/call/type', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    console.log(JSON.parse(req.cookies[encodeURIComponent(req.cookies.user).toString()]))
+    res.render('v1/ExtensionSummaryCallType', {
+        title: 'Extensions Summary Call Type',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/user/extension/detail', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    console.log(JSON.parse(req.cookies[encodeURIComponent(req.cookies.user).toString()]))
+    res.render('v1/rptExtensionDetail', {
+        title: 'Extensions Detail Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/user/group/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    console.log(JSON.parse(req.cookies[encodeURIComponent(req.cookies.user).toString()]))
+    res.render('v1/rptGroupSummary', {
+        title: 'Group Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/user/group/detail', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptGroupDetail', {
+        title: 'Group Detail Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/user/group/summary/get_organizations', function (req, res, next) {
+    database.getConnection(function (err, conn) {
+        var sql = 'SELECT orgid AS id, IFNULL(parent_orgid, "#") AS parent, org_name AS text FROM organizations ORDER BY org_name ASC';
+
+        if (conn) {
+            conn.query({
+                sql: sql
+            }, function (err, rows) {
+                conn.release()
+                if (err) {
+                    return next(err);
+                }
+                else {
+                    res.send(JSON.stringify(rows));
+                }
+            });
+
+        } else {
+            res.status(500).send('Can not connect to database');
+        }
+    });
+});
+
+/* Admin Reports */
+router.get('/admin/accountcode/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptAccoutCodeSummary', {
+        title: 'Account Code Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/accountcode/detail', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptAccoutCodeDetails', {
+        title: 'Account Code Details Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    console.log(JSON.parse(req.cookies[encodeURIComponent(req.cookies.user).toString()]))
+    res.render('v1/rptSummary', {
+        title: 'Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/summary/group', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptSummaryByGroup', {
+        title: 'Summary Report By Group',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+router.get('/admin/summary/group/get_organizations', function (req, res, next) {
+    database.getConnection(function (err, conn) {
+        var sql = 'SELECT orgid AS id, IFNULL(parent_orgid, "#") AS parent, org_name AS text FROM organizations';
+
+        if (conn) {
+            conn.query({
+                sql: sql
+            }, function (err, rows) {
+                conn.release()
+                if (err) {
+                    return next(err);
+                }
+                else {
+                    res.send(JSON.stringify(rows));
+                }
+            });
+
+        } else {
+            res.status(500).send('Can not connect to database');
+        }
+    });
+});
+
+router.get('/admin/destination/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptDestinationSummary', {
+        title: 'Destination Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/destination/summary/get_destinations_name/:tollType/:startDate/:endDate', function (req, res, next) {
+    database.getConnection(function (err, conn) {
+        var sql = 'SELECT DISTINCT COALESCE(calledName, "---") AS text FROM smdr WHERE tollType = "' + req.params.tollType + '" ';
+        sql += 'AND startTime BETWEEN CAST("' + req.params.startDate + '" AS DATE) AND CAST("' + req.params.endDate + '" AS DATE)';
+
+        if (conn) {
+            conn.query({
+                sql: sql
+            }, function (err, rows) {
+                conn.release()
+                if (err)
+                    return next(err);
+                else
+                    array = rows;
+
+                for (i = 0; i < array.length; i++) {
+
+                    Object.assign(array[i], { "id": i + 1 });
+                }
+                res.send(JSON.stringify(array));
+    
+            });
+
+        } else {
+            res.status(500).send('Can not connect to database');
+        }
+    });
+});
+
+router.get('/admin/destination/detail', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptDestinationDetail', {
+        title: 'Destination Details Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/diallednumber/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+
+    res.render('v1/rptDiallednumberSummary', {
+        title: 'Dialled Number Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/diallednumber/detail', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptDiallednumberDetail', {
+        title: 'Dialled Number Detail Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/user/detial', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptUserDetail', {
+        title: 'User Details Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/admin/tranfer/call', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptTransferCall', {
+        title: 'Transfer Call Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+
+/* Trunk Reports */
+router.get('/trunk/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptTrunkSummary', {
+        title: 'Trunk Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/trunk/detail', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptTrunkDetail', {
+        title: 'Trunk Detail Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+/* Top Usage Reports */
+router.get('/top/extension', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+
+    res.render('v1/rptTopExtension', {
+        title: 'Top Extension Usage Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/top/destination', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+
+    res.render('v1/rptTopDestination', {
+        title: 'Top Destination Usage Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/top/diallednumber', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+
+    res.render('v1/rptTopDialledNumber', {
+        title: 'Top Dialled Number Usage Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/top/trunk', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+
+    res.render('v1/rptTopTrunk', {
+        title: 'Top Trunk Usage Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+/* Chat Reports */
+
+router.get('/chart/summary', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptMonthlySummary', {
+        title: 'Monthly Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+router.get('/chart/summary/charge', [passport.authenticate('bearer', { failureRedirect: '/api/v1/signin', session: false }), roles.can('view dashboard')], function (req, res, mext) {
+    res.render('v1/rptMonthlyChargeSummary', {
+        title: 'Monthly Charge Summary Report',
+        token: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).access_token,
+        user: req.user.username,
+        ext_lic: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).ext_license,
+        lic_created_at: JSON.parse(req.cookies[encodeURIComponent(req.user.username)]).created_at,
+    });
+});
+
+
+
+router.get('/config', function (req, res, mext) {
+    res.json({ "host": config.report.uri })
+});
+
+module.exports = router;

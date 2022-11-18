@@ -1,0 +1,63 @@
+extends layout2
+
+block content
+  #page-wrapper
+    // BEGIN TITLE & BREADCRUMB PAGE
+    #title-breadcrumb-option-demo.page-title-breadcrumb
+      .page-header.pull-left
+        .page-title=title
+      ol.breadcrumb.page-breadcrumb.pull-left
+        li
+          i.fa.fa-home
+          
+          a(href='/b2e/') Home
+           
+          i.fa.fa-angle-right
+          &nbsp;
+        li.hidden
+          a(href='#')=title
+          i.fa.fa-angle-right
+        li.active=title
+
+      .clearfix
+    // END TITLE & BREADCRUMB PAGE
+    // BEGIN CONTENT
+    .page-content
+      .row
+        .col-lg-12
+          .portlet.box
+            .portlet-header
+              .caption SMTP Viewer
+        
+            .portlet-body
+              .table-responsive
+                table#editable.table.table-striped.table-bordered.table-hover(style='border-bottom:1px solid #ddd')
+                  thead
+                    tr
+                      th SMTP Host
+                      th Port
+                      th SSL
+                      th SMTP Account
+                      th Email Subject
+                      th Body(HTML)
+                      th From Addr
+                      th From Name
+                  tbody
+                    th=SmtpHost
+                    th=SmtpPort
+                    th=EnableSSL
+                    th=CRDAccount
+                    th=EmailSubject
+                    th=EmailBody
+                    th=FromAddr
+                    th=FromName
+
+
+    // END CONTENT
+    // BEGIN FOOTER
+
+    // END FOOTER
+    // END PAGE WRAPPER
+
+
+block script

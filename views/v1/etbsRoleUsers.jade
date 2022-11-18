@@ -1,0 +1,55 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1(data-i18n='Roles Management') Roles Management
+  // Main content
+  section.content
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            h3.box-title(data-i18n='Users in this role') Users in this role
+          .box-body.pad.table-responsive
+            p
+              a(href='/api/v1/etbs-roles/edit/' + rolename + '/' + profileid , data-i18n='Back to Form') Back to Form
+            table.table.table-bordered.text-center
+              tr
+                th(data-i18n='Username') Username
+                th(data-i18n='Role name') Role name
+                th
+              each user in users
+                tr
+                  td= user.username
+                  td= user.rolename
+                  td
+                    form(method='POST' action='/api/v1/etbs-roles/users/delete')
+                      input#username(type='hidden' name='username' value=user.username)
+                      input#rolename(type='hidden' name='rolename' value=rolename)
+                      input#profileid(type='hidden' name='profileid' value=profileid)
+                      button.btn.btn-danger(type='submit' , data-i18n='remove') Remove
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            h3.box-title(data-i18n='Other user') Other user
+          .box-body.pad.table-responsive
+            table.table.table-bordered.text-center
+              tr
+                th(data-i18n='Username') Username
+                th(data-i18n='Role name') Role name
+                th
+              each user in unRoleUsers
+                tr
+                  td= user.username
+                  td= user.rolename
+                  td
+                    form(method='POST' action='/api/v1/etbs-roles/users/insert')
+                      input#username(type='hidden' name='username' value=user.username)
+                      input#rolename(type='hidden' name='rolename' value=rolename)
+                      input#profileid(type='hidden' name='profileid' value=profileid)
+                      button.btn.btn-primary(type='submit' , data-i18n= 'Apply' ) Apply

@@ -1,0 +1,35 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1(data-i18n='permissions management') Permissions Management
+  // Main content
+  section.content
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            h3.box-title(data-i18n='role of this permission') Role of this permission
+          .box-body.pad.table-responsive
+            p
+              a(href='/api/v1/etbs-permissions/edit/' + permission + '/' + profileid + '/' + perm_type , data-i18n='Back to Form') Back to Form
+            p(data-i18n='role of permission') Role of permission  
+              strong= permission
+              label  is 
+              strong= rolename
+            table.table.table-bordered.text-center
+              tr
+                th(data-i18n='Role Name') Role name
+                th(width=120)
+              each role in roles
+                tr
+                  td= role.rolename
+                  td
+                    form(method='POST' action='/api/v1/etbs-permissions/roles/update')
+                      input#permission(type='hidden' name='permission' value=permission)
+                      input#profileid(type='hidden' name='profileid' value=profileid)
+                      input#perm_type(type='hidden' name='perm_type' value=perm_type)
+                      input#roleProfileid(type='hidden' name='roleProfileid' value=role.profileid)
+                      button.btn.btn-primary(type='submit' , data-i18n='Apply')= 'Apply'

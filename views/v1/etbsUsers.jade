@@ -1,0 +1,86 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1
+      | Users Management
+  // Main content
+  section.content
+    .row
+      .col-xs-12
+        .box
+          .box-header
+            // h3.box-title Users Management
+          // /.box-header
+          .box-body.table-responsive
+            p
+              a(href='/api/v1/etbs-users/add?access_token=' + token) New
+            table#datatable-users.table.table-bordered.table-striped
+              thead
+                tr
+                  th Username
+                  th Client ID
+                  th Role name
+                  th Extension
+                  th Name
+                  th Logo
+                  th Company
+                  th Email
+                  th Mobile
+                  th Fax
+                  th Active
+                  th(width=100)
+              tbody
+                each user in users
+                  tr
+                    td= user.username
+                    td= user.clientid
+                    td= user.rolename
+                    td= user.extension
+                    td= user.name
+                    td= user.logo
+                    td= user.company
+                    td= user.email
+                    td= user.mobile
+                    td= user.fax
+                    td= user.is_active
+                    td(style='text-align: center')
+                      a(href='/api/v1/etbs-users/edit/' + user.username ) Edit
+                      | -
+                      a(href='/api/v1/etbs-users/remove/' + user.username) Remove
+              tfoot
+                tr
+                  th Username
+                  th Client ID
+                  th Role name
+                  th Extension
+                  th Name
+                  th Logo
+                  th Company
+                  th Email
+                  th Mobile
+                  th Fax
+                  th Active
+                  th
+          // /.box-body
+        // /.box
+  // /.content
+block script
+  // jQuery 2.2.0
+  script(src='/AdminLTE-2.3.3/plugins/jQuery/jQuery-2.2.0.min.js')
+  // Bootstrap 3.3.6
+  // script(src='/AdminLTE-2.3.3/bootstrap/js/bootstrap.min.js', type='text/javascript')
+  // DataTables
+  script(src='/AdminLTE-2.3.3/plugins/datatables/jquery.dataTables.min.js', type='text/javascript')
+  script(src='/AdminLTE-2.3.3/plugins/datatables/dataTables.bootstrap.min.js', type='text/javascript')
+  // SlimScroll
+  // script(src='/AdminLTE-2.3.3/plugins/slimScroll/jquery.slimscroll.min.js', type='text/javascript')
+  // FastClick
+  // script(src='/AdminLTE-2.3.3/plugins/fastclick/fastclick.js', type='text/javascript')
+  // AdminLTE App
+  // script(src='/AdminLTE-2.3.3/dist/js/app.min.js', type='text/javascript')
+  // AdminLTE for demo purpose
+  script(src='/AdminLTE-2.3.3/dist/js/demo.js', type='text/javascript')
+  // page script
+  script(src='/javascripts/tables/usersDataTable.js' type='text/javascript')
+  script(src='/javascripts/app.func.js', type='text/javascript')

@@ -1,0 +1,34 @@
+extends layout2
+
+block content
+  #page-wrapper
+    // BEGIN TITLE & BREADCRUMB PAGE
+    #title-breadcrumb-option-demo.page-title-breadcrumb
+      .page-header.pull-left
+        .page-title=title
+      ol.breadcrumb.page-breadcrumb.pull-left
+        li
+          i.fa.fa-home
+          
+          a(href='/b2e/') Home
+          
+          i.fa.fa-angle-right
+          
+        li.hidden
+          a(href='#')=title
+          i.fa.fa-angle-right
+        li.active=title
+          
+      .clearfix
+    // END TITLE & BREADCRUMB PAGE
+    // BEGIN CONTENT
+    .page-content
+      #tab-general
+    // END CONTENT
+    // BEGIN FOOTER
+    
+    // END FOOTER
+    // END PAGE WRAPPER
+
+
+block script

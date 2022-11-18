@@ -1,0 +1,73 @@
+extends layout
+
+block content
+  h1= title
+  ul
+    li
+        form(action='/api/v1/extension', method='post')
+            label extension from:
+            input(type='text', name='extFrom', value='80000')
+            label to:
+            input(type='text', name='extTo', value='99999')
+            br
+            label date from:
+            input(type='text', name='dateFrom', value='2015-01-01')
+            label to:
+            input(type='text', name='dateTo', value='2015-12-31')
+            br
+            label OUT:
+            input(type='checkbox', name='dirOUT', checked)
+            label IN:
+            input(type='checkbox', name='dirIN')
+            label INT:
+            input(type='checkbox', name='dirINT')
+            br
+            label Free:
+            input(type='checkbox', name='tollFree')
+            label Local:
+            input(type='checkbox', name='tollLocal', checked)
+            label Domestic:
+            input(type='checkbox', name='tollDomestic', checked)
+            label Mobile:
+            input(type='checkbox', name='tollMobile', checked)
+            label Inter:
+            input(type='checkbox', name='tollInter', checked)
+
+            input(type='submit', value='extension details')
+    li
+        form(action='/api/v1/extension/summary', method='post')
+            label extension from:
+            input(type='text', name='extFrom', value='0')
+            label to:
+            input(type='text', name='extTo', value='9999999')
+            br
+            label date from:
+            input(type='text', name='dateFrom', value='2015-01-01')
+            label to:
+            input(type='text', name='dateTo', value='2015-12-31')
+            br
+            label OUT:
+            input(type='checkbox', name='dirOUT', checked)
+            label IN:
+            input(type='checkbox', name='dirIN')
+            label INT:
+            input(type='checkbox', name='dirINT')
+            br
+            label Free:
+            input(type='checkbox', name='tollFree', checked)
+            label Local:
+            input(type='checkbox', name='tollLocal', checked)
+            label Domestic:
+            input(type='checkbox', name='tollDomestic', checked)
+            label Mobile:
+            input(type='checkbox', name='tollMobile', checked)
+            label Inter:
+            input(type='checkbox', name='tollInter', checked)
+
+            input(type='submit', value='extension summary')
+    li
+        form(action='/api/v1/extension', method='post')
+            a(href='javascript:;', onclick='parentNode.submit();') trunk details
+    li
+        form(action='/api/v1/extension', method='post')
+            a(href='javascript:;', onclick='parentNode.submit();') trunk summary

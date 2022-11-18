@@ -1,0 +1,169 @@
+extends layout2
+block style
+  link(type='text/css' rel='stylesheet' href='/stylesheets/style.css')
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/DataTables/media/css/dataTables.bootstrap.css')
+
+block content
+  #page-wrapper
+    // BEGIN TITLE & BREADCRUMB PAGE
+    #title-breadcrumb-option-demo.page-title-breadcrumb
+      .page-header.pull-left
+        .page-title=title
+      ol.breadcrumb.page-breadcrumb.pull-left
+        li
+          i.fa.fa-home
+          
+          a(href='/b2e/') Home
+           
+          i.fa.fa-angle-right
+          &nbsp;
+        li.hidden
+          a(href='#')=title
+          i.fa.fa-angle-right
+        li.active=title
+
+      .clearfix
+    // END TITLE & BREADCRUMB PAGE
+    // BEGIN CONTENT
+    .page-content
+
+      #modal_details.modal.fade(tabindex='-1' role='dialog')
+        .modal-dialog(role='document')
+          .modal-content
+            .modal-header
+              button.close(type='button' data-dismiss='modal' aria-label='Close')
+                span(aria-hidden='true')
+              h4.modal-title Report Details
+            .modal-body
+              table(style='width:100%')
+                tbody
+                  tr
+                    th 
+                      | Report ID: 
+                      label#v_RID 
+                    th 
+                      | Report Name: 
+                      label#v_ReportName 
+                  tr
+                    th 
+                      | Start Date: 
+                      label#v_StartDate 
+                    th 
+                      | End Date: 
+                      label#v_EndDate
+                  tr
+                    th 
+                      | Data Type: 
+                      label#v_DataType
+                  tr
+                    th 
+                      | Call Type: 
+                      label#v_CallType
+                      label#v_CT_INC
+                      label#v_CT_OUT
+                      label#v_CT_INT
+                    th 
+                      | Toll Type: 
+                      label#v_TollType 
+                      label#v_TT_UNK
+                      label#v_TT_FRE
+                      label#v_TT_LOC
+                      label#v_TT_MOB
+                      label#v_TT_LON
+                      label#v_TT_OVE
+                    th(hidden)
+                      | Ext Type:
+                      label#v_ExtType  
+                  tr
+                    th 
+                      | Ext From: 
+                      label#v_ExtFrom
+                    th 
+                      | Ext To: 
+                      label#v_ExtTo 
+                  tr
+                    th(hidden) 
+                      | Exts: 
+                      label#v_Exts 
+                    th 
+                      | Group: 
+                      label#v_GroupName 
+                  tr
+                    th 
+                      | Route From: 
+                      label#v_RouteF
+                    th 
+                      | Route To: 
+                      label#v_RouteT
+                  tr
+                    th 
+                      | Trunk From: 
+                      label#v_TrunkF
+                    th 
+                      | Trunk To: 
+                      label#v_TrunkT 
+                  tr
+                    th 
+                      | Account From: 
+                      label#v_AccF
+                    th 
+                      | Account To: 
+                      label#v_AccT 
+                  tr
+                    th 
+                      | Destination: 
+                      label#v_Destination 
+                    th 
+                      | Dialled No.: 
+                      label#v_DialledNo
+                  tr
+                    th 
+                      | User Detail Type: 
+                      label#v_UserDetailType 
+                    th 
+                      | Top Usage By: 
+                      label#v_TopUsageBy 
+                  tr
+                    th 
+                      | Top: 
+                      label#v_Top 
+                    th 
+                      | Day of Monthly Custom: 
+                      label#v_MonthlyCustom 
+
+            .modal-footer
+              button.btn.btn-default(type='button' data-dismiss='modal') Close
+
+      .row
+        .col-lg-12
+          .portlet.box
+            .portlet-header
+              .caption Report Management
+              .btn_insert
+                a#btn_insert.btn-sm.btn-success(href='javascript:;' style='margin-left: 20px;')
+                  i.fa.fa-plus  
+                  |  Add New
+
+            .portlet-body
+              .table-responsive
+                table#editable.table.table-striped.table-bordered.table-hover(style='border-bottom:1px solid #ddd')
+                  thead
+                    tr
+                      th Report ID 
+                      th Name 
+                      th Start Date
+                      th End Date
+
+                      th View
+                      th Edit
+                      th Delete
+                  tbody
+
+
+block script
+  script(src='/theme/madmin-v5.2/vendors/DataTables/media/js/jquery.dataTables.js')
+  script(src='/theme/madmin-v5.2/vendors/DataTables/media/js/dataTables.bootstrap.js')
+  script(src='/theme/madmin-v5.2/vendors/DataTables/jquery.jeditable.js')
+  script(src='/theme/madmin-v5.2/js/table-editable.js')
+
+  script(src='/javascripts/b2e/report.js')

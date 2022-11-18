@@ -1,0 +1,258 @@
+$(document).ready(function () {
+    var dumpTree = document.createElement("div");   // Create a dumpTree element
+    dumpTree.id = "dumpTree";
+    dumpTree.style.display = 'none'
+    document.body.appendChild(dumpTree);
+    $('#treeGroup')[0].style.display = 'none';
+    $.ajax({
+        type: 'GET',
+        url: '/api/v1/reports/user/group/call/deatil/get_organizations',
+        data: {},
+        dataType: 'json',
+        success: function (data) {
+            var raw_tree = data
+            console.log("raw_tree", raw_tree)
+            var show_tree = []
+            if (Cookies.get('role') == 'Administrator') {
+                show_tree = raw_tree
+                $('#treeGroup').jstree({
+                    'core': {
+                        'data': raw_tree
+                    }
+                })
+            }
+            else {
+                $('#dumpTree').jstree({
+                    'core': {
+                        'data': raw_tree
+                    }
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/v1/usersM/usergroup',
+                    data: {
+                        username: Cookies.get('user'),
+                        rolename: Cookies.get('role'),
+                        profileid: Cookies.get('usertype'),
+                    },
+                    dataType: 'json',
+                    success: function (can_view) {
+                        var tmp_child = []
+                        if (can_view == null) {
+                            console.error('CanView NULL ??????')
+                            can_view = []
+                        }
+                        if (typeof can_view == 'string') {
+                            can_view = JSON.parse(can_view)
+                        }
+                        if (can_view.length == 0) {
+                            $('#treeGroup').jstree({
+                                'core': {
+                                    'data': raw_tree
+                                }
+                            })
+                            $('#treeGroup')[0].style.display = '';
+                        } else {
+                            var main_id = []
+                            var has_main = false
+                            var disable_main = true
+                            if (can_view.length != 0 && show_tree.length == 0) {
+                                for (var i = 0; i < raw_tree.length; i++) {
+                                    console.log('raw_id:' + raw_tree[i].id, can_view, can_view.indexOf(raw_tree[i].id))
+                                    if (raw_tree[i].parent == '#' && can_view.indexOf(raw_tree[i].id) == -1) {
+                                        console.log('>>>>> Add raw_id:' + raw_tree[i].id, can_view, can_view.indexOf(raw_tree[i].id))
+                                        show_tree.push(raw_tree[i])
+                                        main_id.push(raw_tree[i].id)
+                                        if (can_view.indexOf(raw_tree[i].id) != -1) {
+                                            console.log("User Has can view Main")
+                                            disable_main = false
+                                        }
+                                    }
+                                }
+                                if (!disable_main && can_view.length == 1) {
+                                    show_tree = raw_tree
+                                } else {
+                                    for (var n = 0; n < can_view.length; n++) {
+                                        for (var i = 0; i < raw_tree.length; i++) {
+                                            if (raw_tree[i].id == can_view[n]) {
+                                                if (raw_tree[i].parent == '#') {
+                                                    if (!has_main) {
+                                                        show_tree.push(raw_tree[i])
+                                                        has_main = true
+                                                    }
+                                                }
+                                                else {
+                                                    show_tree.push(raw_tree[i])
+                                                }
+                                            }
+                                        }
+                                    }
+                                    for (var i = 0; i < can_view.length; i++) {
+                                        for (var n = 0; n < raw_tree.length; n++) {
+                                            if (can_view[i] == raw_tree[n].parent && can_view[i] == raw_tree[n].id) {
+                                                console.log("Add Show Tree : ", raw_tree[n])
+                                                show_tree.push(raw_tree[n])
+                                            }
+                                        }
+                                    }
+                                }
+                                console.log("Can_view : ", can_view)
+                                console.log("Show_tree : ", show_tree)
+                            }
+                            else {
+                            }
+                            $('#treeGroup').jstree({
+                                'core': {
+                                    'data': show_tree
+                                }
+                            })
+                            setTimeout(function () {
+                                for (var i = 0; i < show_tree.length; i++) {
+                                    if ($("#treeGroup").jstree().get_node(show_tree[i].id) != false) {
+                                        if ($("#treeGroup").jstree().get_node(show_tree[i].id).children.length == 0) {
+                                            if ($('#dumpTree').jstree().get_node(show_tree[i].id).children.length != 0) {
+                                                for (var n = 0; n < raw_tree.length; n++) {
+                                                    if (show_tree[i].id == raw_tree[n].parent) {
+                                                        show_tree.push(raw_tree[n])
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                $('#treeGroup').jstree(true).settings.core.data = show_tree;
+                                $('#treeGroup').jstree(true).refresh();
+
+                                setTimeout(function () {
+                                    if (disable_main) {
+                                        for (var i = 0; i < main_id.length; i++) {
+                                            $("#treeGroup").jstree().disable_node(main_id[i]);
+                                            console.log(main_id[i], "=>", $("#treeGroup").jstree().get_node(main_id[i]).children, can_view)
+                                            var hide = 0
+
+                                            for (var d = 0; d < $("#treeGroup").jstree().get_node(main_id[i]).children.length; d++) {
+                                                if (can_view.indexOf($("#treeGroup").jstree().get_node(main_id[i]).children[d]) == -1) {
+                                                    $('#treeGroup').jstree(true).hide_node($("#treeGroup").jstree().get_node(main_id[i]).children[d]);
+                                                    hide++
+                                                }
+                                            }
+                                            if (hide == $("#treeGroup").jstree().get_node(main_id[i]).children.length) {
+                                                $('#treeGroup').jstree(true).hide_node(main_id[i])
+                                            }
+                                        }
+                                    }
+                                    for (var i = 0; i < show_tree.length; i++) {
+
+                                        if ($('#dumpTree').jstree().get_node(show_tree[i].id) != false && $("#treeGroup").jstree().get_node(show_tree[i].id) != false) {
+                                            if ($('#dumpTree').jstree().get_node(show_tree[i].id).children.length != $("#treeGroup").jstree().get_node(show_tree[i].id).children.length) {
+                                                if ($("#treeGroup").jstree().get_node(show_tree[i].id).children.length != 0) {
+                                                    $("#treeGroup").jstree().disable_node(show_tree[i].id);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    $('#treeGroup')[0].style.display = '';
+
+                                }, 600);
+                            }, 250)
+
+                            $('#treeGroup').on("changed.jstree", function (e, data) {
+                                if (data.selected.length) {
+                                    console.log(data.instance.get_node(data.selected[0]))
+                                    if (data.instance.get_node(data.selected[0]).parent == '#') {
+                                        console.log("Main # ")
+                                        console.log(data.instance.get_node(data.selected[0]).parent)
+                                        $('.easy-tree').jstree("deselect_node", data.instance.get_node(data.selected[0]).id);
+                                    } else {
+                                        $('#txtReportGroup').val(data.instance.get_node(data.selected[0]).id);
+                                    }
+                                    //console.log('Selected: [' + data.instance.get_node(data.selected[0]).id + ']' + data.instance.get_node(data.selected[0]).text);
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        }
+    })
+
+
+    $('#treeGroup').on("changed.jstree", function (e, data) {
+        if (data.selected.length) {
+            $('#txtReportGroup').val(data.instance.get_node(data.selected[0]).id);
+            // console.log('Selected: [' + data.instance.get_node(data.selected[0]).id + ']' + data.instance.get_node(data.selected[0]).text);
+        }
+    })
+
+    $("#rptGroupDetail").css({ 'font-weight': 'bold' });
+
+    $('button.btn-rpt-ok').click(function (event) {
+        if ($('#txtReportGroup').val() == "") {
+            alert("Please selected report group!");
+            return;
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/api/v1/reports/config',
+            success: function (data) {
+                var host = data["host"];
+                var reporten = "__report=report/rptGroupCallDeatil.rptdesign";
+                var reportth = "__report=report/rptGroupCallDeatil.rptdesign";
+                var dateFrom = "&DateFrom=" + $('input#dtpDateFrom').val() + " " + $('input#dtpTimeFrom').val();
+                var dateTo = "&DateTo=" + $('input#dtpDateTo').val() + " " + $('input#dtpTimeTo').val();
+                var reportGroup = "&ReportGroup=" + $('#txtReportGroup').val();
+
+                if ($("#ckbCallTypeInternal").is(':checked')) {
+                    callTypeInternal = "&Internal=INT";
+                } else { callTypeInternal = ""; }
+                if ($("#ckbCallTypeIncoming").is(':checked')) {
+                    callTypeIncoming = "&Incoming=IN";
+                } else { callTypeIncoming = ""; }
+                if ($("#ckbCallTypeOutgoing").is(':checked')) {
+                    callTypeOutgoing = "&Outgoing=OUT"
+                } else { callTypeOutgoing = ""; }
+
+                if ($("#ckbTollTypeUnknown").is(':checked')) {
+                    tollTypeUnknown = "&Unknown=Unknown";
+                } else { tollTypeUnknown = ""; }
+                if ($("#ckbTollTypeHotline").is(':checked')) {
+                    tollTypeFree = "&Free=Free";
+                } else { tollTypeFree = ""; }
+                if ($("#ckbTollTypeLocal").is(':checked')) {
+                    tollTypeLocal = "&Local=Local";
+                } else { tollTypeLocal = ""; }
+                if ($("#ckbTollTypeMobile").is(':checked')) {
+                    tollTypeMobile = "&Mobile=Mobile";
+                } else { tollTypeMobile = ""; }
+                if ($("#ckbTollTypeDomestic").is(':checked')) {
+                    tollTypeDomestic = "&Domestic=Domestic";
+                } else { tollTypeDomestic = ""; }
+                if ($("#ckbTollTypeInternational").is(':checked')) {
+                    tollTypeInternational = "&International=International";
+                } else { tollTypeInternational = ""; }
+
+
+
+                if(Cookies.get('lang') == 'th'){
+                    var url = host + reportth + dateFrom + dateTo + reportGroup
+                    + callTypeInternal + callTypeIncoming + callTypeOutgoing
+                    + tollTypeUnknown + tollTypeFree + tollTypeLocal + tollTypeMobile + tollTypeDomestic + tollTypeInternational;
+                window.open(url, '_blank');
+                }else{
+                    var url = host + reporten + dateFrom + dateTo + reportGroup
+                    + callTypeInternal + callTypeIncoming + callTypeOutgoing
+                    + tollTypeUnknown + tollTypeFree + tollTypeLocal + tollTypeMobile + tollTypeDomestic + tollTypeInternational;
+                window.open(url, '_blank');
+                }
+            },
+            error: function (data) {
+                alert('Error: Report host not found');
+            }
+        });
+
+    });
+});
+

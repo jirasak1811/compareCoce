@@ -1,0 +1,108 @@
+extends layout2
+block style
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/DataTables/media/css/jquery.dataTables.css')
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/DataTables/media/css/dataTables.bootstrap.css')
+
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/x-editable/select2/lib/select2-madmin.css')
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/x-editable/bootstrap3-editable/css/bootstrap-editable.css')
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/x-editable/inputs-ext/address/address.css')
+  link(type='text/css' rel='stylesheet' href='/theme/madmin-v5.2/vendors/bootstrap-switch/css/bootstrap-switch.css')
+
+block content
+  // Modal
+  #editModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='editModalLabel' aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#editModalLabel.modal-title Editor
+            button.close(type='button' data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true') ×
+        .modal-body
+          input#status.form-control.input-sm(type='hidden' placeholder='' )
+          input#now_ID.form-control.input-sm(type='hidden' placeholder='' )
+          input#now_nRow.form-control.input-sm(type='hidden' placeholder='' )
+          .form-body.pal.row
+            .form-group
+              label.col-md-3.control-label(for='inputID') Email ID
+              .col-md-9
+                .input-icon.right
+                  i.fa.fa-user
+                  input#inputID.form-control.input-sm(type='text' placeholder='' disabled)
+            .form-group(style="padding-top: 30px;")
+              label.col-md-3.control-label(for='inputEmail') Email Address
+              .col-md-9
+                .input-icon.right
+                  i.fa.fa-user
+                  input#inputEmail.form-control.input-sm(type='text' placeholder='')
+
+
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+          button#btn_save.btn.btn-success(type='button') Save changes
+
+  #page-wrapper
+    // BEGIN TITLE & BREADCRUMB PAGE
+    #title-breadcrumb-option-demo.page-title-breadcrumb
+      .page-header.pull-left
+        .page-title=title
+      ol.breadcrumb.page-breadcrumb.pull-left
+        li
+          i.fa.fa-home
+          
+          a(href='/b2e/') Home
+           
+          i.fa.fa-angle-right
+          &nbsp;
+        li.hidden
+          a(href='#')=title
+          i.fa.fa-angle-right
+        li.active=title
+
+      .clearfix
+
+    .page-content
+      .row
+        .col-lg-12
+          .portlet.box
+            .portlet-header
+              .caption Emails Manager
+              .btn_insert
+                a#btn_insert.btn-sm.btn-success(href='javascript:;' style='margin-left: 20px;')
+                  i.fa.fa-plus  
+                  |  Add New
+
+            .portlet-body
+              .table-responsive
+                table#editable.table.table-striped.table-bordered.table-hover(style='border-bottom:1px solid #ddd')
+                  thead
+                    tr
+                      th Email ID
+                      th Send To
+                      th Edit
+                      th Delete
+                  tbody
+
+
+
+block script
+  script(src='/theme/madmin-v5.2/vendors/DataTables/media/js/jquery.dataTables.js')
+  script(src='/theme/madmin-v5.2/vendors/DataTables/media/js/dataTables.bootstrap.js')
+  script(src='/theme/madmin-v5.2/vendors/DataTables/jquery.jeditable.js')
+  script(src='/theme/madmin-v5.2/js/table-editable.js')
+
+  script(src='/theme/madmin-v5.2/vendors/x-editable/jquery.mockjax.js')
+  script(src='/theme/madmin-v5.2/js/moment.min.js')
+  script(src='/theme/madmin-v5.2/vendors/x-editable/select2/lib/select2.js')
+  script(src='/theme/madmin-v5.2/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')
+  script(src='/theme/madmin-v5.2/vendors/x-editable/bootstrap3-editable/js/bootstrap-editable.min.js')
+  script(src='/theme/madmin-v5.2/vendors/x-editable/inputs-ext/typeaheadjs/lib/typeahead.js')
+  script(src='/theme/madmin-v5.2/vendors/x-editable/inputs-ext/typeaheadjs/typeaheadjs.js')
+  script(src='/theme/madmin-v5.2/vendors/x-editable/inputs-ext/wysihtml5/wysihtml5.js')
+  script(src='/theme/madmin-v5.2/vendors/x-editable/inputs-ext/address/address.js')
+  script(src='/theme/madmin-v5.2/vendors/bootstrap-switch/js/bootstrap-switch.min.js')
+  script(src='/theme/madmin-v5.2/vendors/x-editable/demo-mock.js')
+
+  script(src='/javascripts/b2e/setting_email.js')
+
+    

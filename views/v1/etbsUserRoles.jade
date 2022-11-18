@@ -1,0 +1,34 @@
+extend ../layout2
+block content
+  // Content Header (Page header)
+  section.content-header
+    h1
+      | Users Management
+  // Main content
+  section.content
+    .row
+      // left column
+      .col-md-12
+        // general form elements
+        .box.box-primary
+          .box-header
+            h3.box-title Role of this user
+          .box-body.pad.table-responsive
+            p
+              a(href='/api/v1/etbs-users/edit/' + username) Back to Form
+            p Role of user 
+              strong= username
+              |  is 
+              strong= rolename
+            table.table.table-bordered.text-center
+              tr
+                th Role name
+                th(width=120)
+              each role in roles
+                tr
+                  td= role.rolename
+                  td
+                    form(method='POST' action='/api/v1/etbs-users/roles/update')
+                      input#username(type='hidden' name='username' value=username)
+                      input#rolename(type='hidden' name='rolename' value=role.rolename)
+                      button.btn.btn-primary(type='submit')= 'Apply'
